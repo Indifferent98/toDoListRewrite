@@ -1,10 +1,12 @@
 import s from './/todolist.module.css'
-
-export const Todolist = () => {
+type TodolistPropsType = {
+	title: string
+}
+export const Todolist = (props: TodolistPropsType) => {
 	return (
 		<div className={s.main}>
 			<div className={s.list}>
-				<h3>What to learn</h3>
+				<h3>{props.title}</h3>
 				<div>
 					<input />
 					<button>+</button>
