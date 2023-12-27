@@ -2,7 +2,7 @@ import s from './/todolist.module.css'
 
 export type tasksType = {
 	title: string
-	id: number
+	id: string
 	isDone: boolean
 }
 export type filterValuesType = 'all' | 'completed' | 'active'
@@ -10,7 +10,7 @@ export type filterValuesType = 'all' | 'completed' | 'active'
 type TodolistPropsType = {
 	title: string
 	tasks: tasksType[]
-	removeTask: (id: number) => void
+	removeTask: (id: string) => void
 	// filter: filterValuesType
 	changeFilter: (newFilter: filterValuesType) => void
 }
