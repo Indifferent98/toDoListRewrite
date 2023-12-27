@@ -1,14 +1,18 @@
 import s from './/todolist.module.css'
 
-type tasksType = {
+export type tasksType = {
 	title: string
 	id: number
 	isDone: boolean
 }
+export type filterValuesType = 'all' | 'completed' | 'active'
+
 type TodolistPropsType = {
 	title: string
 	tasks: tasksType[]
 	removeTask: (id: number) => void
+	// filter: filterValuesType
+	changeFilter: (newFilter: filterValuesType) => void
 }
 export const Todolist = (props: TodolistPropsType) => (
 	<div className={s.main}>
@@ -34,9 +38,27 @@ export const Todolist = (props: TodolistPropsType) => (
 				))}
 			</ul>
 			<div>
-				<button>All</button>
-				<button>Active</button>
-				<button>Completed</button>
+				<button
+					onClick={() => {
+						props.changeFilter('all')
+					}}
+				>
+					All
+				</button>
+				<button
+					onClick={() => {
+						props.changeFilter('active')
+					}}
+				>
+					Active
+				</button>
+				<button
+					onClick={() => {
+						props.changeFilter('completed')
+					}}
+				>
+					Completed
+				</button>
 			</div>
 		</div>
 	</div>
