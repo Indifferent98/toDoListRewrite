@@ -18,6 +18,10 @@ function App() {
 	// 	{ id: 4, title: 'Rest Api', isDone: false },
 	// 	{ id: 5, title: 'Graph QL', isDone: false },
 	// ]
+	const addTask = (title: string) => {
+		const newTask = { id: v1(), title, isDone: false }
+		setTasks([newTask, ...tasks])
+	}
 	const removeTask = (id: string) => {
 		setTasks(tasks.filter(t => t.id !== id))
 	}
@@ -41,6 +45,7 @@ function App() {
 				tasks={filtredTask}
 				removeTask={removeTask}
 				changeFilter={changeFilter}
+				addTask={addTask}
 			/>
 			{/* <Todolist title='what to learn' tasks={tasks2} /> */}
 		</div>
