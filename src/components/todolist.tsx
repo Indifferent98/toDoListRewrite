@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState, KeyboardEvent } from 'react'
 import s from './/todolist.module.css'
 
 export type tasksType = {
@@ -27,12 +27,22 @@ export const Todolist = (props: TodolistPropsType) => {
 		setTaskTitle(e.currentTarget.value)
 		console.log(newTaskTitle)
 	}
+	const onKeyPressEvent = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			props.addTask(newTaskTitle)
+			setTaskTitle('')
+		}
+	}
 	return (
 		<div className={s.main}>
 			<div className={s.list}>
 				<h3>{props.title}</h3>
 				<div>
-					<input onChange={onChangeHandler} value={newTaskTitle} />
+					<input
+						onChange={onChangeHandler}
+						onKeyDown={onKeyPressEvent}
+						value={newTaskTitle}
+					/>
 					<button
 						onClick={() => {
 							addTaskButtonHandler(newTaskTitle)
