@@ -20,18 +20,30 @@ type TodolistPropsType = {
 
 export const Todolist = (props: TodolistPropsType) => {
 	const [newTaskTitle, setTaskTitle] = useState<string>('')
-	const addTaskButtonHandler = (title: string) => {
-		props.addTask(title)
-		setTaskTitle('')
+	const [error, setError] = useState<boolean>(false)
+
+	const addTaskButtonHandler = () => {
+		if (newTaskTitle.trim() !== '') {
+			props.addTask(newTaskTitle)
+			setTaskTitle('')
+			setError(false)
+		} else {
+			setError(true)
+		}
 	}
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setTaskTitle(e.currentTarget.value)
-		console.log(newTaskTitle)
+		if (newTaskTitle.trim() !== '') {
+			setError(false)
+		}
 	}
 	const onKeyPressEvent = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter') {
+		if (e.key === 'Enter' && newTaskTitle.trim() !== '') {
 			props.addTask(newTaskTitle)
 			setTaskTitle('')
+			setError(false)
+		} else if (e.key === 'Enter') {
+			setError(true)
 		}
 	}
 
@@ -51,17 +63,22 @@ export const Todolist = (props: TodolistPropsType) => {
 				<h3>{props.title}</h3>
 				<div>
 					<input
+						className={error ? s.error : ''}
 						onChange={onChangeHandler}
 						onKeyDown={onKeyPressEvent}
 						value={newTaskTitle}
 					/>
+
 					<button
 						onClick={() => {
-							addTaskButtonHandler(newTaskTitle)
+							addTaskButtonHandler()
 						}}
 					>
 						+
 					</button>
+					{error && (
+						<div className={s.errorMessage}>Title is hard required</div>
+					)}
 				</div>
 				<ul>
 					{props.tasks.map(t => {
