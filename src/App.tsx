@@ -50,6 +50,7 @@ function App() {
 				changeFilter={changeFilter}
 				addTask={addTask}
 				changeTaskStatus={changeTaskStatus}
+				filter={filter}
 			/>
 			{/* <Todolist title='what to learn' tasks={tasks2} /> */}
 		</div>

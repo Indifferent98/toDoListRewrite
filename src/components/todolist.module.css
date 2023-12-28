@@ -15,3 +15,7 @@
 .errorMessage {
 	color: red;
 }
+
+.currentButtonIsActive {
+	background-color: gold;
+}
