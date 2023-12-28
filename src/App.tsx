@@ -28,24 +28,28 @@ function App() {
 	const changeFilter = (newFilter: filterValuesType) => {
 		setFilter(newFilter)
 	}
+	const changeTaskStatus = (taskId: string, isDone: boolean) => {
+		setTasks(tasks.map(t => (t.id === taskId ? { ...t, isDone } : t)))
+	}
 
-	let filtredTask
+	let filteredTask
 	if (filter === 'active') {
-		filtredTask = tasks.filter(t => !t.isDone)
+		filteredTask = tasks.filter(t => !t.isDone)
 	} else if (filter === 'completed') {
-		filtredTask = tasks.filter(t => t.isDone)
+		filteredTask = tasks.filter(t => t.isDone)
 	} else {
-		filtredTask = tasks
+		filteredTask = tasks
 	}
 
 	return (
 		<div className={s.app}>
 			<Todolist
 				title='what to buy'
-				tasks={filtredTask}
+				tasks={filteredTask}
 				removeTask={removeTask}
 				changeFilter={changeFilter}
 				addTask={addTask}
+				changeTaskStatus={changeTaskStatus}
 			/>
 			{/* <Todolist title='what to learn' tasks={tasks2} /> */}
 		</div>
