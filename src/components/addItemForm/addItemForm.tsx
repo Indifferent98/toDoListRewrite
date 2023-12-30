@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 
 import s from './addItemForm.module.css'
+import { Button } from '@mui/material'
 type addItemFormType = {
 	addItem: (title: string) => void
 }
@@ -42,14 +43,16 @@ export const AddItemForm = (props: addItemFormType) => {
 				onKeyDown={onKeyPressEvent}
 				value={newItemTitle}
 			/>
-
-			<button
+			<Button
+				variant='contained'
+				size='small'
 				onClick={() => {
 					addTaskButtonHandler()
 				}}
 			>
 				+
-			</button>
+			</Button>
+
 			{error && <div className={s.errorMessage}>Title is hard required</div>}
 		</div>
 	)
