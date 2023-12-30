@@ -39,6 +39,9 @@ export const Todolist = (props: TodolistPropsType) => {
 	const onActiveClickHandler = () => {
 		props.changeFilter('active', props.toDoListId)
 	}
+	const addTask = (title: string) => {
+		props.addTask(title, props.toDoListId)
+	}
 
 	return (
 		<div className={s.main}>
@@ -46,7 +49,7 @@ export const Todolist = (props: TodolistPropsType) => {
 				<h3>
 					{props.title} <button onClick={removeToDoList}>x</button>
 				</h3>
-				<AddItemForm addItem={props.addTask} toDoListId={props.toDoListId} />
+				<AddItemForm addItem={addTask} />
 				<ul>
 					{props.tasks.map(t => {
 						const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {

@@ -83,6 +83,11 @@ function App() {
 			),
 		})
 	}
+	const addToDoList = (title: string) => {
+		const toDoListId = v1()
+		setTodolists([...todolists, { id: toDoListId, title, filter: 'all' }])
+		setTasks({ ...tasks, [toDoListId]: [] })
+	}
 
 	// let filteredTask: todolistTasksType[]
 	// if (filter === 'active') {
@@ -95,6 +100,7 @@ function App() {
 
 	return (
 		<div className={s.app}>
+			<AddItemForm addItem={addToDoList} />
 			{todolists.map(t => {
 				let filteredTask: tasksType[]
 				if (t.filter === 'active') {
@@ -105,19 +111,17 @@ function App() {
 					filteredTask = tasks[t.id]
 				}
 				return (
-					<>
-						<Todolist
-							title='what to buy'
-							tasks={filteredTask}
-							removeTask={removeTask}
-							changeFilter={changeFilter}
-							addTask={addTask}
-							changeTaskStatus={changeTaskStatus}
-							filter={t.filter}
-							toDoListId={t.id}
-							removeToDoList={removeToDoList}
-						/>
-					</>
+					<Todolist
+						title={t.title}
+						tasks={filteredTask}
+						removeTask={removeTask}
+						changeFilter={changeFilter}
+						addTask={addTask}
+						changeTaskStatus={changeTaskStatus}
+						filter={t.filter}
+						toDoListId={t.id}
+						removeToDoList={removeToDoList}
+					/>
 				)
 			})}
 			{/* <Todolist

@@ -2,8 +2,7 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 
 import s from './addItemForm.module.css'
 type addItemFormType = {
-	addItem: (title: string, toDoListId: string) => void
-	toDoListId: string
+	addItem: (title: string) => void
 }
 
 export const AddItemForm = (props: addItemFormType) => {
@@ -12,7 +11,7 @@ export const AddItemForm = (props: addItemFormType) => {
 
 	const addTaskButtonHandler = () => {
 		if (newItemTitle.trim() !== '') {
-			props.addItem(newItemTitle, props.toDoListId)
+			props.addItem(newItemTitle)
 			setNewItemTitle('')
 			setError(false)
 		} else {
@@ -28,7 +27,7 @@ export const AddItemForm = (props: addItemFormType) => {
 	}
 	const onKeyPressEvent = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && newItemTitle.trim() !== '') {
-			props.addItem(newItemTitle, props.toDoListId)
+			props.addItem(newItemTitle)
 			setNewItemTitle('')
 			setError(false)
 		} else if (e.key === 'Enter') {
