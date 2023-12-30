@@ -47,7 +47,8 @@ export const Todolist = (props: TodolistPropsType) => {
 		<div className={s.main}>
 			<div className={s.list}>
 				<h3>
-					{props.title} <button onClick={removeToDoList}>x</button>
+					<span>{props.title}</span>
+					<button onClick={removeToDoList}>x</button>
 				</h3>
 				<AddItemForm addItem={addTask} />
 				<ul>
