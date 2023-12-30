@@ -1,6 +1,7 @@
 import { ChangeEvent, useState, KeyboardEvent } from 'react'
 import s from './/todolist.module.css'
 import { AddItemForm } from './addItemForm/addItemForm'
+import { EditableSpan } from './editableSpan/editableSpan'
 
 export type tasksType = {
 	title: string
@@ -24,6 +25,7 @@ type TodolistPropsType = {
 		isDone: boolean,
 		toDoListId: string
 	) => void
+	changeTaskTitle: (title: string, todolistId: string, taskId: string) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
@@ -60,6 +62,10 @@ export const Todolist = (props: TodolistPropsType) => {
 								props.toDoListId
 							)
 						}
+						const changeTaskTitle = (title: string) => {
+							debugger
+							props.changeTaskTitle(title, props.toDoListId, t.id)
+						}
 						return (
 							<li key={t.id}>
 								<input
@@ -67,7 +73,9 @@ export const Todolist = (props: TodolistPropsType) => {
 									onChange={changeTaskStatus}
 									checked={t.isDone}
 								/>
-								<span className={t.isDone ? s.taskIsDone : ''}>{t.title}</span>
+								<span className={t.isDone ? s.taskIsDone : ''}>
+									<EditableSpan title={t.title} changeTitle={changeTaskTitle} />
+								</span>
 								<button
 									onClick={() => {
 										props.removeTask(t.id, props.toDoListId)

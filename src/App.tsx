@@ -85,10 +85,11 @@ function App() {
 		todolistId: string,
 		taskId: string
 	) => {
+		debugger
 		setTasks({
 			...tasks,
-			[taskId]: tasks[todolistId].map(t =>
-				t.id === taskId ? t : { ...t, title }
+			[todolistId]: tasks[todolistId].map(t =>
+				t.id === taskId ? { ...t, title } : t
 			),
 		})
 	}
@@ -116,6 +117,7 @@ function App() {
 						filter={t.filter}
 						toDoListId={t.id}
 						removeToDoList={removeToDoList}
+						changeTaskTitle={changeTaskTitle}
 					/>
 				)
 			})}
