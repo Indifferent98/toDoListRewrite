@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import s from './App.module.css'
 import { Todolist, filterValuesType, tasksType } from './components/todolist'
 import { v1 } from 'uuid'
+import { AddItemForm } from './components/addItemForm/addItemForm'
 
 function App() {
 	type todolistTasksType = { [key: string]: tasksType[] }
@@ -104,17 +105,19 @@ function App() {
 					filteredTask = tasks[t.id]
 				}
 				return (
-					<Todolist
-						title='what to buy'
-						tasks={filteredTask}
-						removeTask={removeTask}
-						changeFilter={changeFilter}
-						addTask={addTask}
-						changeTaskStatus={changeTaskStatus}
-						filter={t.filter}
-						toDoListId={t.id}
-						removeToDoList={removeToDoList}
-					/>
+					<>
+						<Todolist
+							title='what to buy'
+							tasks={filteredTask}
+							removeTask={removeTask}
+							changeFilter={changeFilter}
+							addTask={addTask}
+							changeTaskStatus={changeTaskStatus}
+							filter={t.filter}
+							toDoListId={t.id}
+							removeToDoList={removeToDoList}
+						/>
+					</>
 				)
 			})}
 			{/* <Todolist

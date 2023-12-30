@@ -46,7 +46,7 @@ export const Todolist = (props: TodolistPropsType) => {
 				<h3>
 					{props.title} <button onClick={removeToDoList}>x</button>
 				</h3>
-				<AddItemForm addTask={props.addTask} toDoListId={props.toDoListId} />
+				<AddItemForm addItem={props.addTask} toDoListId={props.toDoListId} />
 				<ul>
 					{props.tasks.map(t => {
 						const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {

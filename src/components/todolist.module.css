@@ -8,14 +8,6 @@
 	border-radius: 10px;
 }
 
-.error {
-	border: 3px solid red;
-}
-
-.errorMessage {
-	color: red;
-}
-
 .currentButtonIsActive {
 	background-color: gold;
 }

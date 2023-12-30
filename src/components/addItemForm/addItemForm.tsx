@@ -2,18 +2,18 @@ import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 
 import s from './addItemForm.module.css'
 type addItemFormType = {
-	addTask: (title: string, toDoListId: string) => void
+	addItem: (title: string, toDoListId: string) => void
 	toDoListId: string
 }
 
 export const AddItemForm = (props: addItemFormType) => {
-	const [newTaskTitle, setTaskTitle] = useState<string>('')
+	const [newItemTitle, setNewItemTitle] = useState<string>('')
 	const [error, setError] = useState<boolean>(false)
 
 	const addTaskButtonHandler = () => {
-		if (newTaskTitle.trim() !== '') {
-			props.addTask(newTaskTitle, props.toDoListId)
-			setTaskTitle('')
+		if (newItemTitle.trim() !== '') {
+			props.addItem(newItemTitle, props.toDoListId)
+			setNewItemTitle('')
 			setError(false)
 		} else {
 			setError(true)
@@ -21,15 +21,15 @@ export const AddItemForm = (props: addItemFormType) => {
 	}
 
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-		setTaskTitle(e.currentTarget.value)
-		if (newTaskTitle.trim() !== '') {
+		setNewItemTitle(e.currentTarget.value)
+		if (newItemTitle.trim() !== '') {
 			setError(false)
 		}
 	}
 	const onKeyPressEvent = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter' && newTaskTitle.trim() !== '') {
-			props.addTask(newTaskTitle, props.toDoListId)
-			setTaskTitle('')
+		if (e.key === 'Enter' && newItemTitle.trim() !== '') {
+			props.addItem(newItemTitle, props.toDoListId)
+			setNewItemTitle('')
 			setError(false)
 		} else if (e.key === 'Enter') {
 			setError(true)
@@ -41,7 +41,7 @@ export const AddItemForm = (props: addItemFormType) => {
 				className={error ? s.error : ''}
 				onChange={onChangeHandler}
 				onKeyDown={onKeyPressEvent}
-				value={newTaskTitle}
+				value={newItemTitle}
 			/>
 
 			<button
