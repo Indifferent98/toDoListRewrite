@@ -1,21 +1,20 @@
-import { ChangeEvent, useState, KeyboardEvent } from 'react'
+import { ChangeEvent } from 'react'
 import s from './/todolist.module.css'
 import { AddItemForm } from './addItemForm/addItemForm'
 import { EditableSpan } from './editableSpan/editableSpan'
 import Button from '@mui/material/Button'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
 import { Delete } from '@mui/icons-material'
-import FormControlLabel from '@mui/material/FormControlLabel'
+
 import Checkbox from '@mui/material/Checkbox'
+import { filterValuesType } from '../reducers/todolists-reducer'
 export type tasksType = {
 	title: string
 	id: string
 	isDone: boolean
 }
-
-export type filterValuesType = 'all' | 'completed' | 'active'
 
 type TodolistPropsType = {
 	title: string
