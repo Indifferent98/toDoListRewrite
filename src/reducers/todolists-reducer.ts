@@ -17,17 +17,26 @@ type addToDoListACType = {
 	toDoListId: string
 }
 
-type todolistActionsType = removeToDoListACtype | addToDoListACType
+type changeToDoListFilterACType = {
+	type: 'CHANGE-TODOLIST-FILTER'
+	filter: filterValuesType
+	toDoListId: string
+}
+type changeToDoListTitleACType = {
+	type: 'CHANGE-TODOLIST-TITLE'
+	title: string
+	toDoListId: string
+}
+type todolistActionsType =
+	| removeToDoListACtype
+	| addToDoListACType
+	| changeToDoListFilterACType
+	| changeToDoListTitleACType
 
 export const removeToDoListAC = (toDoListId: string): removeToDoListACtype => ({
 	type: 'REMOVE-TODOLIST',
 	toDoListId,
 })
-
-// const removeToDoList = (toDoListId: string) => {
-// 	setTodolists(todolists.filter(t => t.id !== toDoListId))
-// 	delete tasks[toDoListId]
-// }
 
 export const addToDoListAC = (title: string): addToDoListACType => ({
 	type: 'ADD-TODOLIST',
@@ -35,11 +44,23 @@ export const addToDoListAC = (title: string): addToDoListACType => ({
 	toDoListId: v1(),
 })
 
-// const addToDoList = (title: string) => {
-// 	const toDoListId = v1()
-// 	setTodolists([...todolists, { id: toDoListId, title, filter: 'all' }])
-// 	setTasks({ ...tasks, [toDoListId]: [] })
-// }
+export const changeToDoListTitleAC = (
+	title: string,
+	toDoListId: string
+): changeToDoListTitleACType => ({
+	type: 'CHANGE-TODOLIST-TITLE',
+	title,
+	toDoListId,
+})
+
+export const changeToDoListFilterAC = (
+	filter: filterValuesType,
+	toDoListId: string
+): changeToDoListFilterACType => ({
+	type: 'CHANGE-TODOLIST-FILTER',
+	filter,
+	toDoListId,
+})
 
 export const todolistReducer = (
 	state: todolistsType[] = initialState,
@@ -56,6 +77,15 @@ export const todolistReducer = (
 			]
 
 		//не забыть сделать action для taskReducer'a
+		case 'CHANGE-TODOLIST-FILTER':
+			return state.map(t =>
+				t.id === action.toDoListId ? { ...t, filter: action.filter } : t
+			)
+
+		case 'CHANGE-TODOLIST-TITLE':
+			return state.map(t =>
+				t.id === action.toDoListId ? { ...t, title: action.title } : t
+			)
 		default:
 			return state
 	}
