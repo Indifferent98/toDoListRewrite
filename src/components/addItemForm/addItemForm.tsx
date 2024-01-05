@@ -22,9 +22,10 @@ export const AddItemForm = (props: addItemFormType) => {
 
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewItemTitle(e.currentTarget.value)
-		if (newItemTitle.trim() !== '') {
-			setError(false)
-		}
+		// if (newItemTitle.trim() !== '') {
+		// 	setError(false)
+		// }
+		setError(false)
 	}
 	const onKeyPressEvent = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && newItemTitle.trim() !== '') {

@@ -114,30 +114,28 @@ export const Todolist = (props: TodolistPropsType) => {
 						className={props.filter === 'all' ? s.currentButtonIsActive : ''}
 						onClick={onAllClickHandler}
 						color={props.filter === 'all' ? 'primary' : 'secondary'}
-						variant='contained'
+						variant={props.filter === 'all' ? 'contained' : 'outlined'}
 						size='small'
 						style={{ borderRadius: '12px' }}
 					>
 						All
 					</Button>
 					<Button
-						className={props.filter === 'all' ? s.currentButtonIsActive : ''}
-						color={props.filter === 'active' ? 'primary' : 'secondary'}
+						className={props.filter === 'active' ? s.currentButtonIsActive : ''}
 						onClick={onActiveClickHandler}
-						variant='contained'
+						variant={props.filter === 'active' ? 'contained' : 'outlined'}
 						size='small'
 						style={{ borderRadius: '12px' }}
 					>
 						Active
 					</Button>
 					<Button
-						variant='contained'
-						color={props.filter === 'completed' ? 'primary' : 'secondary'}
+						variant={props.filter === 'completed' ? 'contained' : 'outlined'}
 						onClick={onCompletedClickHandler}
 						size='small'
 						style={{ borderRadius: '12px' }}
 					>
-						Completed
+						completed
 					</Button>
 				</div>
 			</div>

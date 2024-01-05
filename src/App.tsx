@@ -13,6 +13,7 @@ import {
 	Button,
 	Container,
 	Grid,
+	Paper,
 } from '@mui/material'
 
 function App() {
@@ -156,20 +157,22 @@ function App() {
 						}
 						return (
 							<Grid item>
-								<Todolist
-									key={t.id}
-									title={t.title}
-									tasks={filteredTask}
-									removeTask={removeTask}
-									changeFilter={changeFilter}
-									addTask={addTask}
-									changeTaskStatus={changeTaskStatus}
-									filter={t.filter}
-									toDoListId={t.id}
-									removeToDoList={removeToDoList}
-									changeTaskTitle={changeTaskTitle}
-									changeTodolistTitle={changeTodolistTitle}
-								/>
+								<Paper style={{ padding: '10px' }} elevation={3}>
+									<Todolist
+										key={t.id}
+										title={t.title}
+										tasks={filteredTask}
+										removeTask={removeTask}
+										changeFilter={changeFilter}
+										addTask={addTask}
+										changeTaskStatus={changeTaskStatus}
+										filter={t.filter}
+										toDoListId={t.id}
+										removeToDoList={removeToDoList}
+										changeTaskTitle={changeTaskTitle}
+										changeTodolistTitle={changeTodolistTitle}
+									/>
+								</Paper>
 							</Grid>
 						)
 					})}
