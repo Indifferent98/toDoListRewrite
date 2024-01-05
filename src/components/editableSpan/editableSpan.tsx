@@ -37,6 +37,8 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 			onBlur={changeTitle}
 			size='small'
 			style={{ width: '200px' }}
+			// error={true}
+			// label='Error'
 			autoFocus
 		/>
 	) : (

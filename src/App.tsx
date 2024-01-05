@@ -3,6 +3,15 @@ import s from './App.module.css'
 import { Todolist, filterValuesType, tasksType } from './components/todolist'
 import { v1 } from 'uuid'
 import { AddItemForm } from './components/addItemForm/addItemForm'
+import MenuIcon from '@mui/icons-material/Menu'
+import {
+	Box,
+	AppBar,
+	Toolbar,
+	IconButton,
+	Typography,
+	Button,
+} from '@mui/material'
 
 function App() {
 	type todolistTasksType = { [key: string]: tasksType[] }
@@ -101,34 +110,63 @@ function App() {
 	}
 
 	return (
-		<div className={s.app}>
-			<AddItemForm addItem={addToDoList} />
-			{todolists.map(t => {
-				let filteredTask: tasksType[]
-				if (t.filter === 'active') {
-					filteredTask = tasks[t.id].filter(t => !t.isDone)
-				} else if (t.filter === 'completed') {
-					filteredTask = tasks[t.id].filter(t => t.isDone)
-				} else {
-					filteredTask = tasks[t.id]
-				}
-				return (
-					<Todolist
-						title={t.title}
-						tasks={filteredTask}
-						removeTask={removeTask}
-						changeFilter={changeFilter}
-						addTask={addTask}
-						changeTaskStatus={changeTaskStatus}
-						filter={t.filter}
-						toDoListId={t.id}
-						removeToDoList={removeToDoList}
-						changeTaskTitle={changeTaskTitle}
-						changeTodolistTitle={changeTodolistTitle}
-					/>
-				)
-			})}
-		</div>
+		<Box sx={{ flexGrow: 1 }}>
+			<AppBar position='static' style={{ height: '50px' }}>
+				<Toolbar>
+					<IconButton
+						style={{ marginBottom: '15px' }}
+						size='large'
+						edge='start'
+						color='inherit'
+						aria-label='menu'
+						sx={{ mr: 2 }}
+					>
+						<MenuIcon />
+					</IconButton>
+					<Typography
+						variant='h6'
+						component='div'
+						style={{ marginBottom: '15px' }}
+						sx={{ flexGrow: 1 }}
+					>
+						Todolists
+					</Typography>
+					<Button color='inherit' style={{ marginBottom: '15px' }}>
+						Login
+					</Button>
+				</Toolbar>
+			</AppBar>
+
+			<div className={s.app}>
+				<AddItemForm addItem={addToDoList} />
+				{todolists.map(t => {
+					let filteredTask: tasksType[]
+					if (t.filter === 'active') {
+						filteredTask = tasks[t.id].filter(t => !t.isDone)
+					} else if (t.filter === 'completed') {
+						filteredTask = tasks[t.id].filter(t => t.isDone)
+					} else {
+						filteredTask = tasks[t.id]
+					}
+					return (
+						<Todolist
+							key={t.id}
+							title={t.title}
+							tasks={filteredTask}
+							removeTask={removeTask}
+							changeFilter={changeFilter}
+							addTask={addTask}
+							changeTaskStatus={changeTaskStatus}
+							filter={t.filter}
+							toDoListId={t.id}
+							removeToDoList={removeToDoList}
+							changeTaskTitle={changeTaskTitle}
+							changeTodolistTitle={changeTodolistTitle}
+						/>
+					)
+				})}
+			</div>
+		</Box>
 	)
 }
 
