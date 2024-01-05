@@ -46,6 +46,12 @@ export const AddItemForm = (props: addItemFormType) => {
 			<Button
 				variant='contained'
 				size='small'
+				style={{
+					maxWidth: '23px',
+					maxHeight: '23px',
+					minWidth: '23px',
+					minHeight: '23px',
+				}}
 				onClick={() => {
 					addTaskButtonHandler()
 				}}

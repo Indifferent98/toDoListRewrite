@@ -1,4 +1,5 @@
-import React, { ChangeEvent, useState } from 'react'
+import TextField from '@mui/material/TextField'
+import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
 
 type EditableSpanPropsType = {
 	title: string
@@ -17,12 +18,25 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 		props.changeTitle(newTitle)
 		setEditMode(false)
 	}
+	const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			// changeTitle()
+			props.changeTitle(newTitle)
+			setEditMode(false)
+		}
+	}
 
 	return editMode ? (
-		<input
+		<TextField
+			id='outlined-basic'
+			label='Outlined'
+			variant='outlined'
 			value={newTitle}
+			onKeyDown={onKeyUpHandler}
 			onChange={onChangeHandler}
 			onBlur={changeTitle}
+			size='small'
+			style={{ width: '200px' }}
 			autoFocus
 		/>
 	) : (
