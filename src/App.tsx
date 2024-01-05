@@ -11,6 +11,8 @@ import {
 	IconButton,
 	Typography,
 	Button,
+	Container,
+	Grid,
 } from '@mui/material'
 
 function App() {
@@ -136,36 +138,43 @@ function App() {
 					</Button>
 				</Toolbar>
 			</AppBar>
-
-			<div className={s.app}>
-				<AddItemForm addItem={addToDoList} />
-				{todolists.map(t => {
-					let filteredTask: tasksType[]
-					if (t.filter === 'active') {
-						filteredTask = tasks[t.id].filter(t => !t.isDone)
-					} else if (t.filter === 'completed') {
-						filteredTask = tasks[t.id].filter(t => t.isDone)
-					} else {
-						filteredTask = tasks[t.id]
-					}
-					return (
-						<Todolist
-							key={t.id}
-							title={t.title}
-							tasks={filteredTask}
-							removeTask={removeTask}
-							changeFilter={changeFilter}
-							addTask={addTask}
-							changeTaskStatus={changeTaskStatus}
-							filter={t.filter}
-							toDoListId={t.id}
-							removeToDoList={removeToDoList}
-							changeTaskTitle={changeTaskTitle}
-							changeTodolistTitle={changeTodolistTitle}
-						/>
-					)
-				})}
-			</div>
+			<Container fixed>
+				<Grid container>
+					<span style={{ marginTop: '15px', marginBottom: '15px' }}>
+						<AddItemForm addItem={addToDoList} />
+					</span>
+				</Grid>
+				<Grid container spacing={2}>
+					{todolists.map(t => {
+						let filteredTask: tasksType[]
+						if (t.filter === 'active') {
+							filteredTask = tasks[t.id].filter(t => !t.isDone)
+						} else if (t.filter === 'completed') {
+							filteredTask = tasks[t.id].filter(t => t.isDone)
+						} else {
+							filteredTask = tasks[t.id]
+						}
+						return (
+							<Grid item>
+								<Todolist
+									key={t.id}
+									title={t.title}
+									tasks={filteredTask}
+									removeTask={removeTask}
+									changeFilter={changeFilter}
+									addTask={addTask}
+									changeTaskStatus={changeTaskStatus}
+									filter={t.filter}
+									toDoListId={t.id}
+									removeToDoList={removeToDoList}
+									changeTaskTitle={changeTaskTitle}
+									changeTodolistTitle={changeTodolistTitle}
+								/>
+							</Grid>
+						)
+					})}
+				</Grid>
+			</Container>
 		</Box>
 	)
 }
