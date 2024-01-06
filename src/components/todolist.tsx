@@ -10,11 +10,7 @@ import { Delete } from '@mui/icons-material'
 
 import Checkbox from '@mui/material/Checkbox'
 import { filterValuesType } from '../reducers/todolists-reducer'
-export type tasksType = {
-	title: string
-	id: string
-	isDone: boolean
-}
+import { tasksType } from '../reducers/tasks-reducer'
 
 type TodolistPropsType = {
 	title: string

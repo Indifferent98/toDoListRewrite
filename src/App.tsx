@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Todolist, tasksType } from './components/todolist'
+import { Todolist } from './components/todolist'
 import { v1 } from 'uuid'
 import { AddItemForm } from './components/addItemForm/addItemForm'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -16,9 +16,9 @@ import {
 	Paper,
 } from '@mui/material'
 import { filterValuesType, todolistsType } from './reducers/todolists-reducer'
+import { tasksType, todolistTasksType } from './reducers/tasks-reducer'
 
 function App() {
-	type todolistTasksType = { [key: string]: tasksType[] }
 	let todolistId1 = v1()
 	let todolistId2 = v1()
 	const [tasks, setTasks] = useState<todolistTasksType>({
