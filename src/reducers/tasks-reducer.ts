@@ -1,5 +1,6 @@
 import React from 'react'
 import { v1 } from 'uuid'
+import { addToDoListACType, removeToDoListACtype } from './todolists-reducer'
 
 export type tasksType = {
 	title: string
@@ -69,6 +70,8 @@ type taskReducerType =
 	| removeTaskACType
 	| changeTaskStatusACType
 	| changeTaskTitleACType
+	| addToDoListACType
+	| removeToDoListACtype
 
 export const taskReducer = (
 	state: todolistTasksType = initialState,
@@ -104,6 +107,14 @@ export const taskReducer = (
 					t.id === action.taskId ? { ...t, title: action.title } : t
 				),
 			}
+
+		case 'ADD-TODOLIST':
+			return { ...state, [action.toDoListId]: [] }
+
+		case 'REMOVE-TODOLIST':
+			delete state[action.toDoListId]
+			return state
+
 		default:
 			return state
 	}

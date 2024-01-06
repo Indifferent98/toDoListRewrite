@@ -9,9 +9,12 @@ export type todolistsType = {
 	filter: filterValuesType
 }
 let initialState: todolistsType[] = []
-type removeToDoListACtype = { type: 'REMOVE-TODOLIST'; toDoListId: string }
+export type removeToDoListACtype = {
+	type: 'REMOVE-TODOLIST'
+	toDoListId: string
+}
 
-type addToDoListACType = {
+export type addToDoListACType = {
 	type: 'ADD-TODOLIST'
 	title: string
 	toDoListId: string
@@ -69,14 +72,13 @@ export const todolistReducer = (
 	switch (action.type) {
 		case 'REMOVE-TODOLIST':
 			return [...state.filter(t => t.id !== action.toDoListId)]
-		//не забыть сделать action для taskReducer'a
+
 		case 'ADD-TODOLIST':
 			return [
 				...state,
 				{ id: action.toDoListId, title: action.title, filter: 'all' },
 			]
 
-		//не забыть сделать action для taskReducer'a
 		case 'CHANGE-TODOLIST-FILTER':
 			return state.map(t =>
 				t.id === action.toDoListId ? { ...t, filter: action.filter } : t
