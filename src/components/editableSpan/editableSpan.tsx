@@ -1,11 +1,11 @@
 import TextField from '@mui/material/TextField'
-import React, { ChangeEvent, useState, KeyboardEvent } from 'react'
+import React, { ChangeEvent, useState, KeyboardEvent, useCallback } from 'react'
 
 type EditableSpanPropsType = {
 	title: string
 	changeTitle: (title: string) => void
 }
-export const EditableSpan = (props: EditableSpanPropsType) => {
+export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
 	const [editMode, setEditMode] = useState<boolean>(false)
 	const activeEditMode = () => {
 		setEditMode(true)
@@ -14,17 +14,20 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewTitle(e.currentTarget.value)
 	}
-	const changeTitle = () => {
+	const changeTitle = useCallback(() => {
 		props.changeTitle(newTitle)
 		setEditMode(false)
-	}
-	const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter') {
-			// changeTitle()
-			props.changeTitle(newTitle)
-			setEditMode(false)
-		}
-	}
+	}, [props.changeTitle])
+	const onKeyUpHandler = useCallback(
+		(e: KeyboardEvent<HTMLInputElement>) => {
+			if (e.key === 'Enter') {
+				// changeTitle()
+				props.changeTitle(newTitle)
+				setEditMode(false)
+			}
+		},
+		[props.changeTitle]
+	)
 
 	return editMode ? (
 		<TextField
@@ -44,4 +47,4 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
 	) : (
 		<span onDoubleClick={activeEditMode}>{props.title}</span>
 	)
-}
+})

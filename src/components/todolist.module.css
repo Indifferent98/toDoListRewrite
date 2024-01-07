@@ -11,8 +11,3 @@
 .currentButtonIsActive {
 	background-color: gold;
 }
-
-.taskIsDone {
-	opacity: 0.6;
-	text-decoration: line-through;
-}
