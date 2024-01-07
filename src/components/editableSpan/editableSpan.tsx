@@ -14,20 +14,17 @@ export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setNewTitle(e.currentTarget.value)
 	}
-	const changeTitle = useCallback(() => {
+	const changeTitle = () => {
 		props.changeTitle(newTitle)
 		setEditMode(false)
-	}, [props.changeTitle])
-	const onKeyUpHandler = useCallback(
-		(e: KeyboardEvent<HTMLInputElement>) => {
-			if (e.key === 'Enter') {
-				// changeTitle()
-				props.changeTitle(newTitle)
-				setEditMode(false)
-			}
-		},
-		[props.changeTitle]
-	)
+	}
+	const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			// changeTitle()
+			props.changeTitle(newTitle)
+			setEditMode(false)
+		}
+	}
 
 	return editMode ? (
 		<TextField
