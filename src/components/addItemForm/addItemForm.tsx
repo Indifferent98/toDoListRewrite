@@ -65,8 +65,6 @@ export const AddItemForm = React.memo((props: addItemFormType) => {
 			>
 				<AddIcon />
 			</Button>
-
-			{/* {error && <div className={s.errorMessage}>Title is hard required</div>} */}
 		</div>
 	)
 })
