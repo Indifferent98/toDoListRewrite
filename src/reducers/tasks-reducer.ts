@@ -84,6 +84,7 @@ export const taskReducer = (
 				...state,
 				[action.toDoListId]: [newTask, ...state[action.toDoListId]],
 			}
+
 		case 'REMOVE-TASK':
 			return {
 				...state,
