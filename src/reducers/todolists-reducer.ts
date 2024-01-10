@@ -1,14 +1,15 @@
 import React from 'react'
 
 import { v1 } from 'uuid'
+import { toDoListResponseType } from '../components/api/todolist-api'
 
 export type filterValuesType = 'all' | 'completed' | 'active'
-export type todolistsType = {
-	id: string
-	title: string
+type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type todoListDomainType = {
 	filter: filterValuesType
-}
-let initialState: todolistsType[] = []
+	entityStatus: RequestStatusType
+} & toDoListResponseType
+let initialState: todoListDomainType[] = []
 export type removeToDoListACtype = {
 	type: 'REMOVE-TODOLIST'
 	toDoListId: string
@@ -35,6 +36,7 @@ type todolistActionsType =
 	| addToDoListACType
 	| changeToDoListFilterACType
 	| changeToDoListTitleACType
+	| setToDoListsACType
 
 export const removeToDoListAC = (toDoListId: string): removeToDoListACtype => ({
 	type: 'REMOVE-TODOLIST',
@@ -64,11 +66,21 @@ export const changeToDoListFilterAC = (
 	filter,
 	toDoListId,
 })
+type setToDoListsACType = {
+	type: 'SET-TODOLISTS'
+	todolists: toDoListResponseType[]
+}
+export const setToDoListsAC = (
+	todolists: toDoListResponseType[]
+): setToDoListsACType => ({
+	type: 'SET-TODOLISTS',
+	todolists,
+})
 
 export const todolistReducer = (
-	state: todolistsType[] = initialState,
+	state: todoListDomainType[] = initialState,
 	action: todolistActionsType
-): todolistsType[] => {
+): todoListDomainType[] => {
 	switch (action.type) {
 		case 'REMOVE-TODOLIST':
 			return [...state.filter(t => t.id !== action.toDoListId)]
@@ -76,7 +88,14 @@ export const todolistReducer = (
 		case 'ADD-TODOLIST':
 			return [
 				...state,
-				{ id: action.toDoListId, title: action.title, filter: 'all' },
+				{
+					id: action.toDoListId,
+					title: action.title,
+					filter: 'all',
+					addedDate: String(Date.now()),
+					entityStatus: 'idle',
+					order: 0,
+				},
 			]
 
 		case 'CHANGE-TODOLIST-FILTER':
@@ -88,6 +107,16 @@ export const todolistReducer = (
 			return state.map(t =>
 				t.id === action.toDoListId ? { ...t, title: action.title } : t
 			)
+
+		case 'SET-TODOLISTS':
+			return action.todolists.map(t => ({
+				...t,
+				entityStatus: 'idle',
+				filter: 'all',
+				addedDate: String(Date.now()),
+				order: 0,
+			}))
+
 		default:
 			return state
 	}

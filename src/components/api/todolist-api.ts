@@ -20,7 +20,7 @@ export enum TaskPriorities {
 	Urgently = 3,
 	Later = 4,
 }
-type toDoListType = {
+export type toDoListResponseType = {
 	id: string
 	addedDate: string
 	order: number
@@ -33,7 +33,7 @@ type ResponseType<D = {}> = {
 	data: D
 }
 
-type itemTaskType = toDoListType & {
+type itemTaskType = toDoListResponseType & {
 	description: null | string
 	todoListId: string
 
@@ -59,7 +59,7 @@ type modelTaskType = {
 
 export const TodolistApi = {
 	getToDoLists() {
-		return instance.get<toDoListType[]>('/todo-lists')
+		return instance.get<toDoListResponseType[]>('/todo-lists')
 	},
 	createToDoList(title: string) {
 		return instance.post<ResponseType>('/todo-lists', {
@@ -67,7 +67,7 @@ export const TodolistApi = {
 		})
 	},
 	deleteToDoList(toDoListId: string) {
-		return instance.delete<ResponseType<{ item: toDoListType }>>(
+		return instance.delete<ResponseType<{ item: toDoListResponseType }>>(
 			`/todo-lists/${toDoListId}`
 		)
 	},
