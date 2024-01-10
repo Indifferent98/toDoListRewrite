@@ -5,6 +5,21 @@ const instance = axios.create({
 	withCredentials: true,
 	headers: { 'API-KEY': '34d100b8-894d-4061-9da0-9a27cb217fe9' },
 })
+
+export enum TaskStatuses {
+	New = 0,
+	InProgress = 1,
+	Completed = 2,
+	Draft = 3,
+}
+
+export enum TaskPriorities {
+	Low = 0,
+	Middle = 1,
+	High = 2,
+	Urgently = 3,
+	Later = 4,
+}
 type toDoListType = {
 	id: string
 	addedDate: string
@@ -22,8 +37,8 @@ type itemTaskType = toDoListType & {
 	description: null | string
 	todoListId: string
 
-	status: number
-	priority: number
+	status: TaskStatuses
+	priority: TaskPriorities
 	startDate: null | string
 	deadline: null | string
 }
@@ -36,8 +51,8 @@ type responseTaskType = {
 type modelTaskType = {
 	title: string
 	description: string | null
-	status: number
-	priority: number
+	status: TaskStatuses
+	priority: TaskPriorities
 	startDate: string | null
 	deadline: string | null
 }
