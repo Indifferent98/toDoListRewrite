@@ -1,6 +1,10 @@
 import React from 'react'
 import { v1 } from 'uuid'
-import { addToDoListACType, removeToDoListACtype } from './todolists-reducer'
+import {
+	addToDoListACType,
+	removeToDoListACtype,
+	setToDoListsACType,
+} from './todolists-reducer'
 import {
 	TaskPriorities,
 	TaskStatuses,
@@ -69,6 +73,19 @@ export const changeTaskTitleAC = (
 	todolistId,
 	taskId,
 })
+type setTasksACType = {
+	type: 'SET-TASKS'
+	tasks: itemTaskType[]
+	toDoListId: string
+}
+export const setTasksAC = (
+	tasks: itemTaskType[],
+	toDoListId: string
+): setTasksACType => ({
+	type: 'SET-TASKS',
+	tasks,
+	toDoListId,
+})
 
 type taskReducerType =
 	| addTaskACType
@@ -77,6 +94,8 @@ type taskReducerType =
 	| changeTaskTitleACType
 	| addToDoListACType
 	| removeToDoListACtype
+	| setTasksACType
+	| setToDoListsACType
 
 export const taskReducer = (
 	state: todolistTasksType = initialState,
@@ -134,6 +153,14 @@ export const taskReducer = (
 		case 'REMOVE-TODOLIST':
 			delete state[action.toDoListId]
 			return state
+
+		case 'SET-TASKS':
+			return { ...state, [action.toDoListId]: action.tasks }
+
+		case 'SET-TODOLISTS':
+			const stateCopy = { ...state }
+			action.todolists.forEach(t => (stateCopy[t.id] = []))
+			return stateCopy
 
 		default:
 			return state

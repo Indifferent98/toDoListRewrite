@@ -1,7 +1,11 @@
 import React from 'react'
 
 import { v1 } from 'uuid'
-import { toDoListResponseType } from '../components/api/todolist-api'
+import {
+	TodolistApi,
+	toDoListResponseType,
+} from '../components/api/todolist-api'
+import { Dispatch } from 'redux'
 
 export type filterValuesType = 'all' | 'completed' | 'active'
 type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -66,7 +70,7 @@ export const changeToDoListFilterAC = (
 	filter,
 	toDoListId,
 })
-type setToDoListsACType = {
+export type setToDoListsACType = {
 	type: 'SET-TODOLISTS'
 	todolists: toDoListResponseType[]
 }
@@ -120,4 +124,10 @@ export const todolistReducer = (
 		default:
 			return state
 	}
+}
+
+export const ffetchToDoListsTCTC = () => (dispatch: Dispatch) => {
+	TodolistApi.getToDoLists().then(res => {
+		dispatch(setToDoListsAC(res.data))
+	})
 }
