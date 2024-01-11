@@ -33,7 +33,7 @@ type ResponseType<D = {}> = {
 	data: D
 }
 
-type itemTaskType = toDoListResponseType & {
+export type itemTaskType = toDoListResponseType & {
 	description: null | string
 	todoListId: string
 

@@ -21,18 +21,18 @@ import {
 	changeToDoListTitleAC,
 	filterValuesType,
 	removeToDoListAC,
-	todolistsType,
+	todoListDomainType,
 } from './reducers/todolists-reducer'
 import {
 	addTaskAC,
 	changeTaskStatusAC,
 	changeTaskTitleAC,
 	removeTaskAC,
-	tasksType,
 	todolistTasksType,
 } from './reducers/tasks-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppRootStateType } from './state/store'
+import { itemTaskType } from './components/api/todolist-api'
 
 function App() {
 	const dispatch = useDispatch()
@@ -40,7 +40,7 @@ function App() {
 		state => state.tasks
 	)
 
-	const todolists = useSelector<AppRootStateType, todolistsType[]>(
+	const todolists = useSelector<AppRootStateType, todoListDomainType[]>(
 		state => state.todolists
 	)
 

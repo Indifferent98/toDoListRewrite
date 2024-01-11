@@ -10,14 +10,15 @@ import { Delete } from '@mui/icons-material'
 
 import Checkbox from '@mui/material/Checkbox'
 import { filterValuesType } from '../reducers/todolists-reducer'
-import { tasksType } from '../reducers/tasks-reducer'
+
 import React from 'react'
 import { Task } from './task/task'
+import { TaskStatuses, itemTaskType } from './api/todolist-api'
 
 type TodolistPropsType = {
 	title: string
 	toDoListId: string
-	tasks: tasksType[]
+	tasks: itemTaskType[]
 	removeTask: (id: string, toDoListId: string) => void
 	filter: filterValuesType
 	changeFilter: (newFilter: filterValuesType, toDoListId: string) => void
@@ -37,15 +38,19 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
 	const removeToDoList = () => {
 		props.removeToDoList(props.toDoListId)
 	}
+
 	const onAllClickHandler = useCallback(() => {
 		props.changeFilter('all', props.toDoListId)
 	}, [props.changeFilter, props.toDoListId])
+
 	const onCompletedClickHandler = useCallback(() => {
 		props.changeFilter('completed', props.toDoListId)
 	}, [props.changeFilter, props.toDoListId])
+
 	const onActiveClickHandler = useCallback(() => {
 		props.changeFilter('active', props.toDoListId)
 	}, [props.changeFilter, props.toDoListId])
+
 	const addTask = useCallback(
 		(title: string) => {
 			props.addTask(title, props.toDoListId)
@@ -60,12 +65,12 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
 		[props.changeTodolistTitle, props.toDoListId]
 	)
 
-	let filteredTask: tasksType[] = props.tasks
+	let filteredTask: itemTaskType[] = props.tasks
 	if (props.filter === 'active') {
-		filteredTask = props.tasks.filter(t => !t.isDone)
+		filteredTask = props.tasks.filter(t => t.status === TaskStatuses.InProgress)
 	}
 	if (props.filter === 'completed') {
-		filteredTask = props.tasks.filter(t => t.isDone)
+		filteredTask = props.tasks.filter(t => t.status === TaskStatuses.Completed)
 	}
 
 	return (
