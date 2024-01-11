@@ -4,23 +4,29 @@ import {
 	changeToDoListFilterAC,
 	changeToDoListTitleAC,
 	removeToDoListAC,
+	todoListDomainType,
 	todolistReducer,
-	todolistsType,
 } from './todolists-reducer'
 
 test('todolist should be removed', () => {
 	const todolistid1 = v1()
 	const todolistid2 = v1()
-	const initialState: todolistsType[] = [
+	const initialState: todoListDomainType[] = [
 		{
 			id: todolistid1,
 			title: 'what to learn',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 		{
 			id: todolistid2,
 			title: 'what to read',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 	]
 
@@ -33,16 +39,22 @@ test('todolist should be removed', () => {
 test('todolist should be added', () => {
 	const todolistid1 = v1()
 	const todolistid2 = v1()
-	const initialState: todolistsType[] = [
+	const initialState: todoListDomainType[] = [
 		{
 			id: todolistid1,
 			title: 'what to learn',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 		{
 			id: todolistid2,
 			title: 'what to read',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 	]
 
@@ -57,16 +69,22 @@ test('todolist should be added', () => {
 test('todolist filter should be changed', () => {
 	const todolistid1 = v1()
 	const todolistid2 = v1()
-	const initialState: todolistsType[] = [
+	const initialState: todoListDomainType[] = [
 		{
 			id: todolistid1,
 			title: 'what to learn',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 		{
 			id: todolistid2,
 			title: 'what to read',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 	]
 
@@ -83,16 +101,22 @@ test('todolist filter should be changed', () => {
 test('todolist title should be changed', () => {
 	const todolistid1 = v1()
 	const todolistid2 = v1()
-	const initialState: todolistsType[] = [
+	const initialState: todoListDomainType[] = [
 		{
 			id: todolistid1,
 			title: 'what to learn',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 		{
 			id: todolistid2,
 			title: 'what to read',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 	]
 

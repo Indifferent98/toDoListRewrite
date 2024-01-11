@@ -4,9 +4,10 @@ import { taskReducer, todolistTasksType } from './tasks-reducer'
 import {
 	addToDoListAC,
 	removeToDoListAC,
+	todoListDomainType,
 	todolistReducer,
-	todolistsType,
 } from './todolists-reducer'
+import { TaskPriorities, TaskStatuses } from '../components/api/todolist-api'
 
 test('todolist and task for todolist should be added', () => {
 	const todolistid1 = v1()
@@ -14,27 +15,99 @@ test('todolist and task for todolist should be added', () => {
 
 	const initialTasksState: todolistTasksType = {
 		[todolistid1]: [
-			{ id: v1(), title: 'HTML&CSS', isDone: true },
-			{ id: v1(), title: 'JS', isDone: true },
-			{ id: v1(), title: 'ReactJS', isDone: false },
+			{
+				id: v1(),
+				title: 'HTML&CSS',
+				status: TaskStatuses.Completed,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid1,
+			},
+			{
+				id: v1(),
+				title: 'JS',
+				status: TaskStatuses.Completed,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid1,
+			},
+			{
+				id: v1(),
+				title: 'ReactJS',
+				status: TaskStatuses.InProgress,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid1,
+			},
 		],
 		[todolistid2]: [
-			{ id: v1(), title: 'beer', isDone: true },
-			{ id: v1(), title: 'salt', isDone: false },
-			{ id: v1(), title: 'sugar', isDone: false },
+			{
+				id: v1(),
+				title: 'beer',
+				status: TaskStatuses.Completed,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid2,
+			},
+			{
+				id: v1(),
+				title: 'salt',
+				status: TaskStatuses.InProgress,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid2,
+			},
+			{
+				id: v1(),
+				title: 'sugar',
+				status: TaskStatuses.InProgress,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid2,
+			},
 		],
 	}
 
-	const todolistInitialState: todolistsType[] = [
+	const todolistInitialState: todoListDomainType[] = [
 		{
 			id: todolistid1,
 			title: 'what to learn',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 		{
 			id: todolistid2,
 			title: 'what to read',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 	]
 
@@ -54,27 +127,99 @@ test('todolist and task for todolist should be removed', () => {
 
 	const initialTasksState: todolistTasksType = {
 		[todolistid1]: [
-			{ id: v1(), title: 'HTML&CSS', isDone: true },
-			{ id: v1(), title: 'JS', isDone: true },
-			{ id: v1(), title: 'ReactJS', isDone: false },
+			{
+				id: v1(),
+				title: 'HTML&CSS',
+				status: TaskStatuses.Completed,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid1,
+			},
+			{
+				id: v1(),
+				title: 'JS',
+				status: TaskStatuses.Completed,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid1,
+			},
+			{
+				id: v1(),
+				title: 'ReactJS',
+				status: TaskStatuses.InProgress,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid1,
+			},
 		],
 		[todolistid2]: [
-			{ id: v1(), title: 'beer', isDone: true },
-			{ id: v1(), title: 'salt', isDone: false },
-			{ id: v1(), title: 'sugar', isDone: false },
+			{
+				id: v1(),
+				title: 'beer',
+				status: TaskStatuses.Completed,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid2,
+			},
+			{
+				id: v1(),
+				title: 'salt',
+				status: TaskStatuses.InProgress,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid2,
+			},
+			{
+				id: v1(),
+				title: 'sugar',
+				status: TaskStatuses.InProgress,
+				addedDate: '',
+				deadline: '',
+				description: '',
+				order: 0,
+				priority: TaskPriorities.Low,
+				startDate: '',
+				todoListId: todolistid2,
+			},
 		],
 	}
 
-	const todolistInitialState: todolistsType[] = [
+	const todolistInitialState: todoListDomainType[] = [
 		{
 			id: todolistid1,
 			title: 'what to learn',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 		{
 			id: todolistid2,
 			title: 'what to read',
 			filter: 'all',
+			addedDate: '',
+			entityStatus: 'idle',
+			order: 0,
 		},
 	]
 
