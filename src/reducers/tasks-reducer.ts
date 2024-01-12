@@ -8,8 +8,12 @@ import {
 import {
 	TaskPriorities,
 	TaskStatuses,
+	TodolistApi,
 	itemTaskType,
+	modelTaskType,
 } from '../components/api/todolist-api'
+import { Dispatch } from 'redux'
+import { AppRootStateType } from '../state/store'
 
 // export type tasksType = {
 // 	title: string
@@ -86,6 +90,22 @@ export const setTasksAC = (
 	tasks,
 	toDoListId,
 })
+type updateTaskEntityStatusACType = {
+	type: 'UPDATE-TASK-ENTITY-STATUS'
+	toDoListId: string
+	taskId: string
+	task: itemTaskType
+}
+export const updateTaskEntityStatusAC = (
+	toDoListId: string,
+	taskId: string,
+	task: itemTaskType
+): updateTaskEntityStatusACType => ({
+	type: 'UPDATE-TASK-ENTITY-STATUS',
+	toDoListId,
+	taskId,
+	task,
+})
 
 type taskReducerType =
 	| addTaskACType
@@ -96,6 +116,7 @@ type taskReducerType =
 	| removeToDoListACtype
 	| setTasksACType
 	| setToDoListsACType
+	| updateTaskEntityStatusACType
 
 export const taskReducer = (
 	state: todolistTasksType = initialState,
@@ -162,7 +183,47 @@ export const taskReducer = (
 			action.todolists.forEach(t => (stateCopy[t.id] = []))
 			return stateCopy
 
+		case 'UPDATE-TASK-ENTITY-STATUS':
+			return {
+				...state,
+				[action.toDoListId]: state[action.toDoListId].map(t =>
+					t.id === action.taskId ? action.task : t
+				),
+			}
+
 		default:
 			return state
 	}
 }
+
+export const fetchTasksTC = (toDoListId: string) => (dispatch: Dispatch) => {
+	TodolistApi.getTasks(toDoListId).then(res =>
+		dispatch(setTasksAC(res.data.items, toDoListId))
+	)
+}
+
+export const updateTaskStatusTC =
+	(toDoListId: string, taskId: string, data: modelTaskType) =>
+	(dispatch: Dispatch, getState: () => AppRootStateType) => {
+		const task: itemTaskType = getState().tasks[toDoListId].filter(
+			t => t.id === taskId
+		)[0]
+		const model: modelTaskType = {
+			deadline: task.deadline,
+			description: task.description,
+			priority: task.priority,
+			startDate: task.startDate,
+			status: task.status,
+			title: task.title,
+
+			...data,
+		}
+
+		TodolistApi.changeTaskState(toDoListId, taskId, model).then(res => {
+			if (res.data.resultCode === 0) {
+				dispatch(
+					updateTaskEntityStatusAC(toDoListId, taskId, { ...task, ...data })
+				)
+			}
+		})
+	}

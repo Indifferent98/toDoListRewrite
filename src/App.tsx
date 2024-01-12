@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { Todolist } from './components/todolist'
+import { Todolist } from './components/todolists'
 import { v1 } from 'uuid'
 import { AddItemForm } from './components/addItemForm/addItemForm'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -19,7 +19,7 @@ import {
 	addToDoListAC,
 	changeToDoListFilterAC,
 	changeToDoListTitleAC,
-	ffetchToDoListsTC,
+	fetchToDoListsTC,
 	filterValuesType,
 	removeToDoListAC,
 	todoListDomainType,
@@ -30,23 +30,19 @@ import {
 	changeTaskTitleAC,
 	removeTaskAC,
 	todolistTasksType,
+	updateTaskStatusTC,
 } from './reducers/tasks-reducer'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-	AppDispatchType,
-	AppRootStateType,
-	useAppDispatch,
-} from './state/store'
-import { itemTaskType } from './components/api/todolist-api'
-import { Dispatch } from 'redux'
+import { useSelector } from 'react-redux'
+import { AppRootStateType, useAppDispatch } from './state/store'
+import { TaskStatuses } from './components/api/todolist-api'
 
 function App() {
 	const dispatch = useAppDispatch()
-	const tasks = useSelector<AppRootStateType, todolistTasksType>(
-		state => state.tasks
-	)
+	// const tasks = useSelector<AppRootStateType, todolistTasksType>(
+	// 	state => state.tasks
+	// )
 	useEffect(() => {
-		dispatch(ffetchToDoListsTC())
+		dispatch(fetchToDoListsTC())
 	}, [])
 	const todolists = useSelector<AppRootStateType, todoListDomainType[]>(
 		state => state.todolists
@@ -79,7 +75,11 @@ function App() {
 	)
 	const changeTaskStatus = useCallback(
 		(taskId: string, isDone: boolean, toDoListId: string) => {
-			dispatch(changeTaskStatusAC(taskId, isDone, toDoListId))
+			dispatch(
+				updateTaskStatusTC(toDoListId, taskId, {
+					status: isDone ? TaskStatuses.Completed : TaskStatuses.InProgress,
+				})
+			)
 		},
 		[dispatch]
 	)
@@ -92,7 +92,11 @@ function App() {
 
 	const changeTaskTitle = useCallback(
 		(title: string, todolistId: string, taskId: string) => {
-			dispatch(changeTaskTitleAC(title, todolistId, taskId))
+			dispatch(
+				updateTaskStatusTC(todolistId, taskId, {
+					title: title,
+				})
+			)
 		},
 		[dispatch]
 	)
@@ -145,7 +149,7 @@ function App() {
 									<Todolist
 										key={t.id}
 										title={t.title}
-										tasks={tasks[t.id]}
+										// tasks={tasks[t.id]}
 										removeTask={removeTask}
 										changeFilter={changeFilter}
 										addTask={addTask}

@@ -126,7 +126,7 @@ export const todolistReducer = (
 	}
 }
 
-export const ffetchToDoListsTCTC = () => (dispatch: Dispatch) => {
+export const fetchToDoListsTC = () => (dispatch: Dispatch) => {
 	TodolistApi.getToDoLists().then(res => {
 		dispatch(setToDoListsAC(res.data))
 	})

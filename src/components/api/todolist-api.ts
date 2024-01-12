@@ -48,13 +48,13 @@ type responseTaskType = {
 	items: itemTaskType[]
 }
 
-type modelTaskType = {
-	title: string
-	description: string | null
-	status: TaskStatuses
-	priority: TaskPriorities
-	startDate: string | null
-	deadline: string | null
+export type modelTaskType = {
+	title?: string
+	description?: string | null
+	status?: TaskStatuses
+	priority?: TaskPriorities
+	startDate?: string | null
+	deadline?: string | null
 }
 
 export const TodolistApi = {

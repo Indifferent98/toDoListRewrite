@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback } from 'react'
+import { ChangeEvent, useCallback, useEffect } from 'react'
 import s from './/todolist.module.css'
 import { AddItemForm } from './addItemForm/addItemForm'
 import { EditableSpan } from './editableSpan/editableSpan'
@@ -14,11 +14,14 @@ import { filterValuesType } from '../reducers/todolists-reducer'
 import React from 'react'
 import { Task } from './task/task'
 import { TaskStatuses, itemTaskType } from './api/todolist-api'
+import { AppRootStateType, useAppDispatch } from '../state/store'
+import { fetchTasksTC } from '../reducers/tasks-reducer'
+import { useSelector } from 'react-redux'
 
 type TodolistPropsType = {
 	title: string
 	toDoListId: string
-	tasks: itemTaskType[]
+	// tasks: itemTaskType[]
 	removeTask: (id: string, toDoListId: string) => void
 	filter: filterValuesType
 	changeFilter: (newFilter: filterValuesType, toDoListId: string) => void
@@ -34,6 +37,14 @@ type TodolistPropsType = {
 }
 
 export const Todolist = React.memo((props: TodolistPropsType) => {
+	const tasks = useSelector<AppRootStateType, itemTaskType[]>(
+		state => state.tasks[props.toDoListId]
+	)
+	const dispatch = useAppDispatch()
+	useEffect(() => {
+		dispatch(fetchTasksTC(props.toDoListId))
+	}, [])
+
 	console.log('todolist called')
 	const removeToDoList = () => {
 		props.removeToDoList(props.toDoListId)
@@ -65,12 +76,12 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
 		[props.changeTodolistTitle, props.toDoListId]
 	)
 
-	let filteredTask: itemTaskType[] = props.tasks
+	let filteredTask: itemTaskType[] = tasks
 	if (props.filter === 'active') {
-		filteredTask = props.tasks.filter(t => t.status === TaskStatuses.InProgress)
+		filteredTask = tasks.filter(t => t.status === TaskStatuses.InProgress)
 	}
 	if (props.filter === 'completed') {
-		filteredTask = props.tasks.filter(t => t.status === TaskStatuses.Completed)
+		filteredTask = tasks.filter(t => t.status === TaskStatuses.Completed)
 	}
 
 	return (
