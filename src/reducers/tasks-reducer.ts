@@ -24,14 +24,21 @@ export type todolistTasksType = { [key: string]: itemTaskType[] }
 
 const initialState: todolistTasksType = {}
 
-type addTaskACType = { type: 'ADD-TASK'; title: string; toDoListId: string }
+type addTaskACType = {
+	type: 'ADD-TASK'
+	title: string
+	toDoListId: string
+	taskId: string
+}
 export const addTaskAC = (
 	title: string,
-	toDoListId: string
+	toDoListId: string,
+	taskId: string
 ): addTaskACType => ({
 	type: 'ADD-TASK',
 	title,
 	toDoListId,
+	taskId,
 })
 
 type removeTaskACType = {
@@ -125,7 +132,7 @@ export const taskReducer = (
 	switch (action.type) {
 		case 'ADD-TASK':
 			const newTask: itemTaskType = {
-				id: v1(),
+				id: action.taskId,
 				title: action.title,
 				status: TaskStatuses.InProgress,
 				addedDate: String(new Date()),
@@ -224,6 +231,24 @@ export const updateTaskStatusTC =
 				dispatch(
 					updateTaskEntityStatusAC(toDoListId, taskId, { ...task, ...data })
 				)
+			}
+		})
+	}
+
+export const addTaskTC =
+	(toDoListId: string, title: string) => (dispatch: Dispatch) => {
+		TodolistApi.createTask(toDoListId, title).then(res => {
+			if (res.data.resultCode === 0) {
+				dispatch(addTaskAC(title, toDoListId, res.data.data.item.id))
+			}
+		})
+	}
+
+export const removeTaskTC =
+	(toDoListId: string, taskId: string) => (dispatch: Dispatch) => {
+		TodolistApi.removeTask(toDoListId, taskId).then(res => {
+			if (res.data.resultCode === 0) {
+				dispatch(removeTaskAC(taskId, toDoListId))
 			}
 		})
 	}

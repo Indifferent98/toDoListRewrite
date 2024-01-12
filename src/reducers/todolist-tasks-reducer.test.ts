@@ -111,7 +111,7 @@ test('todolist and task for todolist should be added', () => {
 		},
 	]
 
-	const action = addToDoListAC('new todolist')
+	const action = addToDoListAC('new todolist', v1())
 	const taskResult = taskReducer(initialTasksState, action)
 	const todolistResult = todolistReducer(todolistInitialState, action)
 

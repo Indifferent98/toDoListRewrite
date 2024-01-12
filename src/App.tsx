@@ -17,18 +17,23 @@ import {
 } from '@mui/material'
 import {
 	addToDoListAC,
+	addToDoListTC,
 	changeToDoListFilterAC,
 	changeToDoListTitleAC,
+	changeToDoListTitleTC,
 	fetchToDoListsTC,
 	filterValuesType,
 	removeToDoListAC,
+	removeToDoListTC,
 	todoListDomainType,
 } from './reducers/todolists-reducer'
 import {
 	addTaskAC,
+	addTaskTC,
 	changeTaskStatusAC,
 	changeTaskTitleAC,
 	removeTaskAC,
+	removeTaskTC,
 	todolistTasksType,
 	updateTaskStatusTC,
 } from './reducers/tasks-reducer'
@@ -50,20 +55,20 @@ function App() {
 
 	const removeToDoList = useCallback(
 		(toDoListId: string) => {
-			dispatch(removeToDoListAC(toDoListId))
+			dispatch(removeToDoListTC(toDoListId))
 		},
 		[dispatch]
 	)
 
 	const addTask = useCallback(
 		(title: string, toDoListId: string) => {
-			dispatch(addTaskAC(title, toDoListId))
+			dispatch(addTaskTC(toDoListId, title))
 		},
 		[dispatch]
 	)
 	const removeTask = useCallback(
 		(id: string, toDoListId: string) => {
-			dispatch(removeTaskAC(id, toDoListId))
+			dispatch(removeTaskTC(toDoListId, id))
 		},
 		[dispatch]
 	)
@@ -85,7 +90,7 @@ function App() {
 	)
 	const addToDoList = useCallback(
 		(title: string) => {
-			dispatch(addToDoListAC(title))
+			dispatch(addToDoListTC(title))
 		},
 		[dispatch]
 	)
@@ -103,7 +108,7 @@ function App() {
 
 	const changeTodolistTitle = useCallback(
 		(todolistId: string, title: string) => {
-			dispatch(changeToDoListTitleAC(title, todolistId))
+			dispatch(changeToDoListTitleTC(todolistId, title))
 		},
 		[dispatch]
 	)

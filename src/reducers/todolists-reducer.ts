@@ -47,10 +47,13 @@ export const removeToDoListAC = (toDoListId: string): removeToDoListACtype => ({
 	toDoListId,
 })
 
-export const addToDoListAC = (title: string): addToDoListACType => ({
+export const addToDoListAC = (
+	title: string,
+	toDoListId: string
+): addToDoListACType => ({
 	type: 'ADD-TODOLIST',
 	title,
-	toDoListId: v1(),
+	toDoListId,
 })
 
 export const changeToDoListTitleAC = (
@@ -131,3 +134,29 @@ export const fetchToDoListsTC = () => (dispatch: Dispatch) => {
 		dispatch(setToDoListsAC(res.data))
 	})
 }
+
+export const removeToDoListTC =
+	(toDoListId: string) => (dispatch: Dispatch) => {
+		TodolistApi.deleteToDoList(toDoListId).then(res => {
+			if (res.data.resultCode === 0) {
+				dispatch(removeToDoListAC(toDoListId))
+			}
+		})
+	}
+
+export const addToDoListTC = (title: string) => (dispatch: Dispatch) => {
+	TodolistApi.createToDoList(title).then(res => {
+		if (res.data.resultCode === 0) {
+			dispatch(addToDoListAC(title, res.data.data.item.id))
+		}
+	})
+}
+
+export const changeToDoListTitleTC =
+	(toDoListId: string, title: string) => (dispatch: Dispatch) => {
+		TodolistApi.updateToDoList(toDoListId, title).then(res => {
+			if (res.data.resultCode === 0) {
+				dispatch(changeToDoListTitleAC(title, toDoListId))
+			}
+		})
+	}

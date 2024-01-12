@@ -93,7 +93,10 @@ test('task should be added', () => {
 		],
 	}
 
-	const result = taskReducer(initialState, addTaskAC('new Task', todolistid2))
+	const result = taskReducer(
+		initialState,
+		addTaskAC('new Task', todolistid2, v1())
+	)
 	expect(result[todolistid1].length).toBe(3)
 	expect(result[todolistid1][0].title).toBe('HTML&CSS')
 	expect(result[todolistid2].length).toBe(4)
