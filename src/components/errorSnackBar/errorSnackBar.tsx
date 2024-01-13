@@ -5,6 +5,7 @@ import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
 import { errorType, setErrorAC } from '../../reducers/app-reducer'
 import { useAppDispatch } from '../../state/store'
+import { useEffect, useState } from 'react'
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 	props,
@@ -16,27 +17,23 @@ type ErrorSnackBarPropsType = {
 	errorMessage: errorType
 }
 export const ErrorSnackBar = (props: ErrorSnackBarPropsType) => {
-	const [open, setOpen] = React.useState(true)
 	const dispatch = useAppDispatch()
+
+	const [timerId, setTimerId] = useState<NodeJS.Timeout>()
+	useEffect(() => {
+		let id = setTimeout(() => {
+			dispatch(setErrorAC(null))
+		}, 8000)
+		setTimerId(id)
+	}, [])
 	const handleClick = () => {
+		clearTimeout(timerId)
 		dispatch(setErrorAC(null))
-	}
-
-	const handleClose = (
-		event?: React.SyntheticEvent | Event,
-		reason?: string
-	) => {
-		debugger
-		if (reason === 'clickaway') {
-			return
-		}
-
-		setOpen(false)
 	}
 
 	return (
 		<Stack spacing={2} sx={{ width: '100%' }}>
-			<Snackbar autoHideDuration={1111} onClose={handleClose}></Snackbar>
+			<Snackbar autoHideDuration={1111}></Snackbar>
 
 			<Alert severity='error'>
 				{props.errorMessage}

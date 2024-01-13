@@ -168,9 +168,7 @@ function App() {
 				</Container>
 			</Box>
 			<div className={s.footer}>
-				appError?
-				<ErrorSnackBar errorMessage={appError} />
-				:''
+				{appError ? <ErrorSnackBar errorMessage={appError} /> : ''}
 			</div>
 		</>
 	)
