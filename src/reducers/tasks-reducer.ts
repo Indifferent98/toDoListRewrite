@@ -14,6 +14,7 @@ import {
 } from '../components/api/todolist-api'
 import { Dispatch } from 'redux'
 import { AppRootStateType } from '../state/store'
+import { setErrorAC, setLoadingStatusAC } from './app-reducer'
 
 // export type tasksType = {
 // 	title: string
@@ -231,6 +232,13 @@ export const updateTaskStatusTC =
 				dispatch(
 					updateTaskEntityStatusAC(toDoListId, taskId, { ...task, ...data })
 				)
+			} else {
+				if (res.data.messages.length) {
+					dispatch(setErrorAC(res.data.messages[0]))
+				} else {
+					dispatch(setErrorAC('Some error was occurred'))
+				}
+				dispatch(setLoadingStatusAC('failed'))
 			}
 		})
 	}
@@ -240,6 +248,13 @@ export const addTaskTC =
 		TodolistApi.createTask(toDoListId, title).then(res => {
 			if (res.data.resultCode === 0) {
 				dispatch(addTaskAC(title, toDoListId, res.data.data.item.id))
+			} else {
+				if (res.data.messages.length) {
+					dispatch(setErrorAC(res.data.messages[0]))
+				} else {
+					dispatch(setErrorAC('Some error was occurred'))
+				}
+				dispatch(setLoadingStatusAC('failed'))
 			}
 		})
 	}
@@ -249,6 +264,13 @@ export const removeTaskTC =
 		TodolistApi.removeTask(toDoListId, taskId).then(res => {
 			if (res.data.resultCode === 0) {
 				dispatch(removeTaskAC(taskId, toDoListId))
+			} else {
+				if (res.data.messages.length) {
+					dispatch(setErrorAC(res.data.messages[0]))
+				} else {
+					dispatch(setErrorAC('Some error was occurred'))
+				}
+				dispatch(setLoadingStatusAC('failed'))
 			}
 		})
 	}

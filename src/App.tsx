@@ -14,8 +14,10 @@ import {
 	Container,
 	Grid,
 	Paper,
+	CircularProgress,
 } from '@mui/material'
 import {
+	RequestStatusType,
 	addToDoListTC,
 	changeToDoListFilterAC,
 	changeToDoListTitleTC,
@@ -39,6 +41,9 @@ function App() {
 	const dispatch = useAppDispatch()
 	const appError = useSelector<AppRootStateType, errorType>(
 		state => state.appState.error
+	)
+	const loadingStatus = useSelector<AppRootStateType, RequestStatusType>(
+		state => state.appState.status
 	)
 	useEffect(() => {
 		dispatch(fetchToDoListsTC())
@@ -107,7 +112,18 @@ function App() {
 		[dispatch]
 	)
 
-	return (
+	return loadingStatus === 'loading' ? (
+		<div
+			style={{
+				position: 'fixed',
+				top: '40%',
+				textAlign: 'center',
+				width: '100%',
+			}}
+		>
+			<CircularProgress />
+		</div>
+	) : (
 		<>
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position='static' style={{ height: '50px' }}>
@@ -168,7 +184,7 @@ function App() {
 				</Container>
 			</Box>
 			<div className={s.footer}>
-				{appError ? <ErrorSnackBar errorMessage={appError} /> : ''}
+				{appError && <ErrorSnackBar errorMessage={appError} />}
 			</div>
 		</>
 	)
