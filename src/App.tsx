@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import { Todolist } from './components/todolists'
-import { v1 } from 'uuid'
+import s from './App.module.css'
 import { AddItemForm } from './components/addItemForm/addItemForm'
 import MenuIcon from '@mui/icons-material/Menu'
 import {
@@ -16,36 +16,30 @@ import {
 	Paper,
 } from '@mui/material'
 import {
-	addToDoListAC,
 	addToDoListTC,
 	changeToDoListFilterAC,
-	changeToDoListTitleAC,
 	changeToDoListTitleTC,
 	fetchToDoListsTC,
 	filterValuesType,
-	removeToDoListAC,
 	removeToDoListTC,
 	todoListDomainType,
 } from './reducers/todolists-reducer'
 import {
-	addTaskAC,
 	addTaskTC,
-	changeTaskStatusAC,
-	changeTaskTitleAC,
-	removeTaskAC,
 	removeTaskTC,
-	todolistTasksType,
 	updateTaskStatusTC,
 } from './reducers/tasks-reducer'
 import { useSelector } from 'react-redux'
 import { AppRootStateType, useAppDispatch } from './state/store'
 import { TaskStatuses } from './components/api/todolist-api'
+import { ErrorSnackBar } from './components/errorSnackBar/errorSnackBar'
+import { errorType } from './reducers/app-reducer'
 
 function App() {
 	const dispatch = useAppDispatch()
-	// const tasks = useSelector<AppRootStateType, todolistTasksType>(
-	// 	state => state.tasks
-	// )
+	const appError = useSelector<AppRootStateType, errorType>(
+		state => state.appState.error
+	)
 	useEffect(() => {
 		dispatch(fetchToDoListsTC())
 	}, [])
@@ -114,64 +108,71 @@ function App() {
 	)
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position='static' style={{ height: '50px' }}>
-				<Toolbar>
-					<IconButton
-						style={{ marginBottom: '15px' }}
-						size='large'
-						edge='start'
-						color='inherit'
-						aria-label='menu'
-						sx={{ mr: 2 }}
-					>
-						<MenuIcon />
-					</IconButton>
-					<Typography
-						variant='h6'
-						component='div'
-						style={{ marginBottom: '15px' }}
-						sx={{ flexGrow: 1 }}
-					>
-						Todolists
-					</Typography>
-					<Button color='inherit' style={{ marginBottom: '15px' }}>
-						Login
-					</Button>
-				</Toolbar>
-			</AppBar>
-			<Container fixed>
-				<Grid container>
-					<span style={{ marginTop: '15px', marginBottom: '15px' }}>
-						<AddItemForm addItem={addToDoList} />
-					</span>
-				</Grid>
-				<Grid container spacing={2}>
-					{todolists.map(t => {
-						return (
-							<Grid key={t.id} item>
-								<Paper style={{ padding: '10px' }} elevation={3}>
-									<Todolist
-										key={t.id}
-										title={t.title}
-										// tasks={tasks[t.id]}
-										removeTask={removeTask}
-										changeFilter={changeFilter}
-										addTask={addTask}
-										changeTaskStatus={changeTaskStatus}
-										filter={t.filter}
-										toDoListId={t.id}
-										removeToDoList={removeToDoList}
-										changeTaskTitle={changeTaskTitle}
-										changeTodolistTitle={changeTodolistTitle}
-									/>
-								</Paper>
-							</Grid>
-						)
-					})}
-				</Grid>
-			</Container>
-		</Box>
+		<>
+			<Box sx={{ flexGrow: 1 }}>
+				<AppBar position='static' style={{ height: '50px' }}>
+					<Toolbar>
+						<IconButton
+							style={{ marginBottom: '15px' }}
+							size='large'
+							edge='start'
+							color='inherit'
+							aria-label='menu'
+							sx={{ mr: 2 }}
+						>
+							<MenuIcon />
+						</IconButton>
+						<Typography
+							variant='h6'
+							component='div'
+							style={{ marginBottom: '15px' }}
+							sx={{ flexGrow: 1 }}
+						>
+							Todolists
+						</Typography>
+						<Button color='inherit' style={{ marginBottom: '15px' }}>
+							Login
+						</Button>
+					</Toolbar>
+				</AppBar>
+				<Container fixed>
+					<Grid container>
+						<span style={{ marginTop: '15px', marginBottom: '15px' }}>
+							<AddItemForm addItem={addToDoList} />
+						</span>
+					</Grid>
+					<Grid container spacing={2}>
+						{todolists.map(t => {
+							return (
+								<Grid key={t.id} item>
+									<Paper style={{ padding: '10px' }} elevation={3}>
+										<Todolist
+											key={t.id}
+											title={t.title}
+											// tasks={tasks[t.id]}
+											removeTask={removeTask}
+											changeFilter={changeFilter}
+											addTask={addTask}
+											changeTaskStatus={changeTaskStatus}
+											filter={t.filter}
+											toDoListId={t.id}
+											removeToDoList={removeToDoList}
+											changeTaskTitle={changeTaskTitle}
+											changeTodolistTitle={changeTodolistTitle}
+										/>
+									</Paper>
+								</Grid>
+							)
+						})}
+					</Grid>
+				</Container>
+			</Box>
+			<div className={s.footer}>
+				appError?
+				<ErrorSnackBar errorMessage={appError} />
+				:''
+			</div>
+		</>
 	)
 }
 
