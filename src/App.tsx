@@ -154,7 +154,7 @@ function App() {
 				<Container fixed>
 					<Grid container>
 						<span style={{ marginTop: '15px', marginBottom: '15px' }}>
-							<AddItemForm addItem={addToDoList} />
+							<AddItemForm addItem={addToDoList} disabled={false} />
 						</span>
 					</Grid>
 					<Grid container spacing={2}>

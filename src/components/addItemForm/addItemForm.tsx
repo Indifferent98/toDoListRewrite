@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add'
 import { Button, TextField } from '@mui/material'
 type addItemFormType = {
 	addItem: (title: string) => void
+	disabled: boolean
 }
 
 export const AddItemForm = React.memo((props: addItemFormType) => {
@@ -40,6 +41,7 @@ export const AddItemForm = React.memo((props: addItemFormType) => {
 	return (
 		<div>
 			<TextField
+				disabled={props.disabled}
 				id='outlined-basic'
 				label={error ? 'Title is hard required' : 'Enter title'}
 				size='small'
@@ -51,6 +53,7 @@ export const AddItemForm = React.memo((props: addItemFormType) => {
 			/>
 
 			<Button
+				disabled={props.disabled}
 				variant='contained'
 				size='small'
 				style={{

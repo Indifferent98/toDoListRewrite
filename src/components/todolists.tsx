@@ -83,12 +83,21 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
 	if (props.filter === 'completed') {
 		filteredTask = tasks.filter(t => t.status === TaskStatuses.Completed)
 	}
-
+	const isDisabled = useSelector<AppRootStateType, boolean>(state =>
+		state.todolists.filter(t => t.id === props.toDoListId)[0].entityStatus ===
+		'loading'
+			? true
+			: false
+	)
 	return (
 		<div className={s.main}>
 			<div className={s.list}>
 				<h3>
-					<EditableSpan title={props.title} changeTitle={changeTodolistTitle} />
+					<EditableSpan
+						title={props.title}
+						changeTitle={changeTodolistTitle}
+						disabled={isDisabled}
+					/>
 					<IconButton
 						onClick={removeToDoList}
 						size='small'
@@ -98,10 +107,11 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
 						<DeleteIcon color='action' />
 					</IconButton>
 				</h3>
-				<AddItemForm addItem={addTask} />
+				<AddItemForm addItem={addTask} disabled={isDisabled} />
 				<ul>
 					{filteredTask.map(t => (
 						<Task
+							disabled={isDisabled}
 							key={t.id}
 							task={t}
 							changeTaskStatus={props.changeTaskStatus}

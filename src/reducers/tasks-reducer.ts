@@ -1,6 +1,7 @@
 import React from 'react'
 import { v1 } from 'uuid'
 import {
+	RequestStatusType,
 	addToDoListACType,
 	removeToDoListACtype,
 	setToDoListsACType,
@@ -114,6 +115,22 @@ export const updateTaskEntityStatusAC = (
 	taskId,
 	task,
 })
+type changeTaskLoadingStatusAC = {
+	type: 'CHANGE-TASK-LOADING-STATUS'
+	taskId: string
+	toDoListId: string
+	status: RequestStatusType
+}
+export const changeTaskLoadingStatusAC = (
+	toDoListId: string,
+	taskId: string,
+	status: RequestStatusType
+): changeTaskLoadingStatusAC => ({
+	type: 'CHANGE-TASK-LOADING-STATUS',
+	toDoListId,
+	taskId,
+	status,
+})
 
 type taskReducerType =
 	| addTaskACType
@@ -125,6 +142,7 @@ type taskReducerType =
 	| setTasksACType
 	| setToDoListsACType
 	| updateTaskEntityStatusACType
+	| changeTaskLoadingStatusAC
 
 export const taskReducer = (
 	state: todolistTasksType = initialState,
@@ -198,6 +216,13 @@ export const taskReducer = (
 					t.id === action.taskId ? action.task : t
 				),
 			}
+		// case 'CHANGE-TASK-LOADING-STATUS':
+		// 	return {
+		// 		...state,
+		// 		[action.toDoListId]: state[action.toDoListId].map(t =>
+		// 			t.id === action.taskId ? { ...t, isLoading: action.status } : t
+		// 		),
+		// 	}
 
 		default:
 			return state
@@ -205,9 +230,18 @@ export const taskReducer = (
 }
 
 export const fetchTasksTC = (toDoListId: string) => (dispatch: Dispatch) => {
-	TodolistApi.getTasks(toDoListId).then(res =>
-		dispatch(setTasksAC(res.data.items, toDoListId))
-	)
+	TodolistApi.getTasks(toDoListId)
+		.then(res => {
+			if (res.data.items) {
+				dispatch(setTasksAC(res.data.items, toDoListId))
+			} else {
+				dispatch(setErrorAC(res.data.error))
+			}
+		})
+		.catch(error => {
+			dispatch(setErrorAC(error.message))
+			dispatch(setLoadingStatusAC('failed'))
+		})
 }
 
 export const updateTaskStatusTC =
@@ -227,50 +261,65 @@ export const updateTaskStatusTC =
 			...data,
 		}
 
-		TodolistApi.changeTaskState(toDoListId, taskId, model).then(res => {
-			if (res.data.resultCode === 0) {
-				dispatch(
-					updateTaskEntityStatusAC(toDoListId, taskId, { ...task, ...data })
-				)
-			} else {
-				if (res.data.messages.length) {
-					dispatch(setErrorAC(res.data.messages[0]))
+		TodolistApi.changeTaskState(toDoListId, taskId, model)
+			.then(res => {
+				if (res.data.resultCode === 0) {
+					dispatch(
+						updateTaskEntityStatusAC(toDoListId, taskId, { ...task, ...data })
+					)
 				} else {
-					dispatch(setErrorAC('Some error was occurred'))
+					if (res.data.messages.length) {
+						dispatch(setErrorAC(res.data.messages[0]))
+					} else {
+						dispatch(setErrorAC('Some error was occurred'))
+					}
+					dispatch(setLoadingStatusAC('failed'))
 				}
+			})
+			.catch(error => {
+				dispatch(setErrorAC(error.message))
 				dispatch(setLoadingStatusAC('failed'))
-			}
-		})
+			})
 	}
 
 export const addTaskTC =
 	(toDoListId: string, title: string) => (dispatch: Dispatch) => {
-		TodolistApi.createTask(toDoListId, title).then(res => {
-			if (res.data.resultCode === 0) {
-				dispatch(addTaskAC(title, toDoListId, res.data.data.item.id))
-			} else {
-				if (res.data.messages.length) {
-					dispatch(setErrorAC(res.data.messages[0]))
+		TodolistApi.createTask(toDoListId, title)
+			.then(res => {
+				if (res.data.resultCode === 0) {
+					dispatch(addTaskAC(title, toDoListId, res.data.data.item.id))
 				} else {
-					dispatch(setErrorAC('Some error was occurred'))
+					if (res.data.messages.length) {
+						dispatch(setErrorAC(res.data.messages[0]))
+					} else {
+						dispatch(setErrorAC('Some error was occurred'))
+					}
+					dispatch(setLoadingStatusAC('failed'))
 				}
+			})
+			.catch(error => {
+				dispatch(setErrorAC(error.message))
 				dispatch(setLoadingStatusAC('failed'))
-			}
-		})
+			})
 	}
 
 export const removeTaskTC =
 	(toDoListId: string, taskId: string) => (dispatch: Dispatch) => {
-		TodolistApi.removeTask(toDoListId, taskId).then(res => {
-			if (res.data.resultCode === 0) {
-				dispatch(removeTaskAC(taskId, toDoListId))
-			} else {
-				if (res.data.messages.length) {
-					dispatch(setErrorAC(res.data.messages[0]))
+		TodolistApi.removeTask(toDoListId, taskId)
+			.then(res => {
+				if (res.data.resultCode === 0) {
+					dispatch(removeTaskAC(taskId, toDoListId))
 				} else {
-					dispatch(setErrorAC('Some error was occurred'))
+					if (res.data.messages.length) {
+						dispatch(setErrorAC(res.data.messages[0]))
+					} else {
+						dispatch(setErrorAC('Some error was occurred'))
+					}
+					dispatch(setLoadingStatusAC('failed'))
 				}
+			})
+			.catch(error => {
+				dispatch(setErrorAC(error.message))
 				dispatch(setLoadingStatusAC('failed'))
-			}
-		})
+			})
 	}

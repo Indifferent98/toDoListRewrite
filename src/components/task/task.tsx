@@ -16,6 +16,7 @@ type TaskType = {
 	changeTaskTitle: (title: string, todolistId: string, taskId: string) => void
 	removeTask: (id: string, toDoListId: string) => void
 	task: itemTaskType
+	disabled: boolean
 }
 export const Task = React.memo((props: TaskType) => {
 	const changeTaskStatus = useCallback(
@@ -38,6 +39,7 @@ export const Task = React.memo((props: TaskType) => {
 	return (
 		<li>
 			<Checkbox
+				disabled={props.disabled}
 				onChange={changeTaskStatus}
 				checked={props.task.status === TaskStatuses.Completed ? true : false}
 				size='small'
@@ -48,9 +50,14 @@ export const Task = React.memo((props: TaskType) => {
 					props.task.status === TaskStatuses.Completed ? s.taskIsDone : ''
 				}
 			>
-				<EditableSpan title={props.task.title} changeTitle={changeTaskTitle} />
+				<EditableSpan
+					title={props.task.title}
+					changeTitle={changeTaskTitle}
+					disabled={props.disabled}
+				/>
 			</span>
 			<IconButton
+				disabled={props.disabled}
 				size='small'
 				color='default'
 				style={{ maxHeight: '20px', maxWidth: '20px', width: '20px' }}

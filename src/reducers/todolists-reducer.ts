@@ -42,6 +42,7 @@ type todolistActionsType =
 	| changeToDoListFilterACType
 	| changeToDoListTitleACType
 	| setToDoListsACType
+	| changeToDoListEntityStatusACType
 
 export const removeToDoListAC = (toDoListId: string): removeToDoListACtype => ({
 	type: 'REMOVE-TODOLIST',
@@ -84,6 +85,19 @@ export const setToDoListsAC = (
 	type: 'SET-TODOLISTS',
 	todolists,
 })
+type changeToDoListEntityStatusACType = {
+	type: 'CHANGE-TODOLIST-ENTITY-STATUS'
+	toDoListId: string
+	entityStatus: RequestStatusType
+}
+export const changeToDoListEntityStatusAC = (
+	toDoListId: string,
+	entityStatus: RequestStatusType
+): changeToDoListEntityStatusACType => ({
+	type: 'CHANGE-TODOLIST-ENTITY-STATUS',
+	toDoListId,
+	entityStatus,
+})
 
 export const todolistReducer = (
 	state: todoListDomainType[] = initialState,
@@ -125,29 +139,64 @@ export const todolistReducer = (
 				order: 0,
 			}))
 
+		case 'CHANGE-TODOLIST-ENTITY-STATUS':
+			return state.map(t =>
+				t.id === action.toDoListId
+					? { ...t, entityStatus: action.entityStatus }
+					: t
+			)
+
 		default:
 			return state
 	}
 }
 
 export const fetchToDoListsTC = () => (dispatch: Dispatch) => {
-	TodolistApi.getToDoLists().then(res => {
-		if (res.data) {
-			dispatch(setToDoListsAC(res.data))
-			dispatch(setLoadingStatusAC('succeeded'))
-		} else {
-			dispatch(setErrorAC('Some error was occurred'))
+	TodolistApi.getToDoLists()
+		.then(res => {
+			if (res.data) {
+				dispatch(setToDoListsAC(res.data))
+				dispatch(setLoadingStatusAC('succeeded'))
+			} else {
+				dispatch(setErrorAC('Some error was occurred'))
 
+				dispatch(setLoadingStatusAC('failed'))
+			}
+		})
+		.catch(error => {
+			dispatch(setErrorAC(error.message))
 			dispatch(setLoadingStatusAC('failed'))
-		}
-	})
+		})
 }
 
 export const removeToDoListTC =
 	(toDoListId: string) => (dispatch: Dispatch) => {
-		TodolistApi.deleteToDoList(toDoListId).then(res => {
+		dispatch(changeToDoListEntityStatusAC(toDoListId, 'loading'))
+		TodolistApi.deleteToDoList(toDoListId)
+			.then(res => {
+				dispatch(changeToDoListEntityStatusAC(toDoListId, 'idle'))
+				if (res.data.resultCode === 0) {
+					dispatch(removeToDoListAC(toDoListId))
+				} else {
+					if (res.data.messages.length) {
+						dispatch(setErrorAC(res.data.messages[0]))
+					} else {
+						dispatch(setErrorAC('Some error was occurred'))
+					}
+					dispatch(setLoadingStatusAC('failed'))
+				}
+			})
+			.catch(error => {
+				dispatch(setErrorAC(error.message))
+				dispatch(setLoadingStatusAC('failed'))
+			})
+	}
+
+export const addToDoListTC = (title: string) => (dispatch: Dispatch) => {
+	TodolistApi.createToDoList(title)
+		.then(res => {
 			if (res.data.resultCode === 0) {
-				dispatch(removeToDoListAC(toDoListId))
+				dispatch(addToDoListAC(title, res.data.data.item.id))
 			} else {
 				if (res.data.messages.length) {
 					dispatch(setErrorAC(res.data.messages[0]))
@@ -157,35 +206,29 @@ export const removeToDoListTC =
 				dispatch(setLoadingStatusAC('failed'))
 			}
 		})
-	}
-
-export const addToDoListTC = (title: string) => (dispatch: Dispatch) => {
-	TodolistApi.createToDoList(title).then(res => {
-		if (res.data.resultCode === 0) {
-			dispatch(addToDoListAC(title, res.data.data.item.id))
-		} else {
-			if (res.data.messages.length) {
-				dispatch(setErrorAC(res.data.messages[0]))
-			} else {
-				dispatch(setErrorAC('Some error was occurred'))
-			}
+		.catch(error => {
+			dispatch(setErrorAC(error.message))
 			dispatch(setLoadingStatusAC('failed'))
-		}
-	})
+		})
 }
 
 export const changeToDoListTitleTC =
 	(toDoListId: string, title: string) => (dispatch: Dispatch) => {
-		TodolistApi.updateToDoList(toDoListId, title).then(res => {
-			if (res.data.resultCode === 0) {
-				dispatch(changeToDoListTitleAC(title, toDoListId))
-			} else {
-				if (res.data.messages.length) {
-					dispatch(setErrorAC(res.data.messages[0]))
+		TodolistApi.updateToDoList(toDoListId, title)
+			.then(res => {
+				if (res.data.resultCode === 0) {
+					dispatch(changeToDoListTitleAC(title, toDoListId))
 				} else {
-					dispatch(setErrorAC('Some error was occurred'))
+					if (res.data.messages.length) {
+						dispatch(setErrorAC(res.data.messages[0]))
+					} else {
+						dispatch(setErrorAC('Some error was occurred'))
+					}
+					dispatch(setLoadingStatusAC('failed'))
 				}
+			})
+			.catch(error => {
+				dispatch(setErrorAC(error.message))
 				dispatch(setLoadingStatusAC('failed'))
-			}
-		})
+			})
 	}
