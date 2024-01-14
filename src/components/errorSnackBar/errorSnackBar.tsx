@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
-import { errorType, setErrorAC } from '../../reducers/app-reducer'
+import { errorType, setAppErrorAC } from '../../reducers/app-reducer'
 import { useAppDispatch } from '../../state/store'
 import { useEffect, useState } from 'react'
 
@@ -22,13 +22,13 @@ export const ErrorSnackBar = (props: ErrorSnackBarPropsType) => {
 	const [timerId, setTimerId] = useState<NodeJS.Timeout>()
 	useEffect(() => {
 		let id = setTimeout(() => {
-			dispatch(setErrorAC(null))
+			dispatch(setAppErrorAC(null))
 		}, 8000)
 		setTimerId(id)
 	}, [])
 	const handleClick = () => {
 		clearTimeout(timerId)
-		dispatch(setErrorAC(null))
+		dispatch(setAppErrorAC(null))
 	}
 
 	return (

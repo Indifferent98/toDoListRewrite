@@ -6,7 +6,8 @@ import {
 	toDoListResponseType,
 } from '../components/api/todolist-api'
 import { Dispatch } from 'redux'
-import { setErrorAC, setLoadingStatusAC } from './app-reducer'
+import { setAppErrorAC, setLoadingStatusAC } from './app-reducer'
+import { handleServerNetworkError } from '../utils/error-utils'
 
 export type filterValuesType = 'all' | 'completed' | 'active'
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -158,14 +159,13 @@ export const fetchToDoListsTC = () => (dispatch: Dispatch) => {
 				dispatch(setToDoListsAC(res.data))
 				dispatch(setLoadingStatusAC('succeeded'))
 			} else {
-				dispatch(setErrorAC('Some error was occurred'))
+				dispatch(setAppErrorAC('Some error was occurred'))
 
 				dispatch(setLoadingStatusAC('failed'))
 			}
 		})
 		.catch(error => {
-			dispatch(setErrorAC(error.message))
-			dispatch(setLoadingStatusAC('failed'))
+			handleServerNetworkError(dispatch, error)
 		})
 }
 
@@ -179,16 +179,15 @@ export const removeToDoListTC =
 					dispatch(removeToDoListAC(toDoListId))
 				} else {
 					if (res.data.messages.length) {
-						dispatch(setErrorAC(res.data.messages[0]))
+						dispatch(setAppErrorAC(res.data.messages[0]))
 					} else {
-						dispatch(setErrorAC('Some error was occurred'))
+						dispatch(setAppErrorAC('Some error was occurred'))
 					}
 					dispatch(setLoadingStatusAC('failed'))
 				}
 			})
 			.catch(error => {
-				dispatch(setErrorAC(error.message))
-				dispatch(setLoadingStatusAC('failed'))
+				handleServerNetworkError(dispatch, error)
 			})
 	}
 
@@ -199,16 +198,15 @@ export const addToDoListTC = (title: string) => (dispatch: Dispatch) => {
 				dispatch(addToDoListAC(title, res.data.data.item.id))
 			} else {
 				if (res.data.messages.length) {
-					dispatch(setErrorAC(res.data.messages[0]))
+					dispatch(setAppErrorAC(res.data.messages[0]))
 				} else {
-					dispatch(setErrorAC('Some error was occurred'))
+					dispatch(setAppErrorAC('Some error was occurred'))
 				}
 				dispatch(setLoadingStatusAC('failed'))
 			}
 		})
 		.catch(error => {
-			dispatch(setErrorAC(error.message))
-			dispatch(setLoadingStatusAC('failed'))
+			handleServerNetworkError(dispatch, error)
 		})
 }
 
@@ -220,15 +218,14 @@ export const changeToDoListTitleTC =
 					dispatch(changeToDoListTitleAC(title, toDoListId))
 				} else {
 					if (res.data.messages.length) {
-						dispatch(setErrorAC(res.data.messages[0]))
+						dispatch(setAppErrorAC(res.data.messages[0]))
 					} else {
-						dispatch(setErrorAC('Some error was occurred'))
+						dispatch(setAppErrorAC('Some error was occurred'))
 					}
 					dispatch(setLoadingStatusAC('failed'))
 				}
 			})
 			.catch(error => {
-				dispatch(setErrorAC(error.message))
-				dispatch(setLoadingStatusAC('failed'))
+				handleServerNetworkError(dispatch, error)
 			})
 	}

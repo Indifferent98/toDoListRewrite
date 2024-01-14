@@ -15,7 +15,8 @@ import {
 } from '../components/api/todolist-api'
 import { Dispatch } from 'redux'
 import { AppRootStateType } from '../state/store'
-import { setErrorAC, setLoadingStatusAC } from './app-reducer'
+import { setAppErrorAC, setLoadingStatusAC } from './app-reducer'
+import { handleServerNetworkError } from '../utils/error-utils'
 
 // export type tasksType = {
 // 	title: string
@@ -235,12 +236,11 @@ export const fetchTasksTC = (toDoListId: string) => (dispatch: Dispatch) => {
 			if (res.data.items) {
 				dispatch(setTasksAC(res.data.items, toDoListId))
 			} else {
-				dispatch(setErrorAC(res.data.error))
+				dispatch(setAppErrorAC(res.data.error))
 			}
 		})
 		.catch(error => {
-			dispatch(setErrorAC(error.message))
-			dispatch(setLoadingStatusAC('failed'))
+			handleServerNetworkError(dispatch, error)
 		})
 }
 
@@ -269,16 +269,15 @@ export const updateTaskStatusTC =
 					)
 				} else {
 					if (res.data.messages.length) {
-						dispatch(setErrorAC(res.data.messages[0]))
+						dispatch(setAppErrorAC(res.data.messages[0]))
 					} else {
-						dispatch(setErrorAC('Some error was occurred'))
+						dispatch(setAppErrorAC('Some error was occurred'))
 					}
 					dispatch(setLoadingStatusAC('failed'))
 				}
 			})
 			.catch(error => {
-				dispatch(setErrorAC(error.message))
-				dispatch(setLoadingStatusAC('failed'))
+				handleServerNetworkError(dispatch, error)
 			})
 	}
 
@@ -290,16 +289,15 @@ export const addTaskTC =
 					dispatch(addTaskAC(title, toDoListId, res.data.data.item.id))
 				} else {
 					if (res.data.messages.length) {
-						dispatch(setErrorAC(res.data.messages[0]))
+						dispatch(setAppErrorAC(res.data.messages[0]))
 					} else {
-						dispatch(setErrorAC('Some error was occurred'))
+						dispatch(setAppErrorAC('Some error was occurred'))
 					}
 					dispatch(setLoadingStatusAC('failed'))
 				}
 			})
 			.catch(error => {
-				dispatch(setErrorAC(error.message))
-				dispatch(setLoadingStatusAC('failed'))
+				handleServerNetworkError(dispatch, error)
 			})
 	}
 
@@ -311,15 +309,14 @@ export const removeTaskTC =
 					dispatch(removeTaskAC(taskId, toDoListId))
 				} else {
 					if (res.data.messages.length) {
-						dispatch(setErrorAC(res.data.messages[0]))
+						dispatch(setAppErrorAC(res.data.messages[0]))
 					} else {
-						dispatch(setErrorAC('Some error was occurred'))
+						dispatch(setAppErrorAC('Some error was occurred'))
 					}
 					dispatch(setLoadingStatusAC('failed'))
 				}
 			})
 			.catch(error => {
-				dispatch(setErrorAC(error.message))
-				dispatch(setLoadingStatusAC('failed'))
+				handleServerNetworkError(dispatch, error)
 			})
 	}

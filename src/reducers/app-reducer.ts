@@ -9,7 +9,7 @@ const initialState: initialStateType = {
 	error: null,
 	status: 'loading',
 }
-type setErrorACType = {
+type setAppErrorACType = {
 	type: 'SET-ERROR'
 	errorStatus: string | null
 }
@@ -23,11 +23,13 @@ export const setLoadingStatusAC = (
 	type: 'SET-LOADING-STATUS',
 	loadingStatus,
 })
-export const setErrorAC = (errorStatus: string | null): setErrorACType => ({
+export const setAppErrorAC = (
+	errorStatus: string | null
+): setAppErrorACType => ({
 	type: 'SET-ERROR',
 	errorStatus,
 })
-type appActionsType = setErrorACType | setLoadingStatusACType
+type appActionsType = setAppErrorACType | setLoadingStatusACType
 export const appReducer = (
 	state: initialStateType = initialState,
 	action: appActionsType
