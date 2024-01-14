@@ -16,7 +16,10 @@ import {
 import { Dispatch } from 'redux'
 import { AppRootStateType } from '../state/store'
 import { setAppErrorAC, setLoadingStatusAC } from './app-reducer'
-import { handleServerNetworkError } from '../utils/error-utils'
+import {
+	handleServerAppError,
+	handleServerNetworkError,
+} from '../utils/error-utils'
 
 // export type tasksType = {
 // 	title: string
@@ -268,12 +271,7 @@ export const updateTaskStatusTC =
 						updateTaskEntityStatusAC(toDoListId, taskId, { ...task, ...data })
 					)
 				} else {
-					if (res.data.messages.length) {
-						dispatch(setAppErrorAC(res.data.messages[0]))
-					} else {
-						dispatch(setAppErrorAC('Some error was occurred'))
-					}
-					dispatch(setLoadingStatusAC('failed'))
+					handleServerAppError<{ item: itemTaskType }>(res.data, dispatch)
 				}
 			})
 			.catch(error => {
@@ -288,12 +286,7 @@ export const addTaskTC =
 				if (res.data.resultCode === 0) {
 					dispatch(addTaskAC(title, toDoListId, res.data.data.item.id))
 				} else {
-					if (res.data.messages.length) {
-						dispatch(setAppErrorAC(res.data.messages[0]))
-					} else {
-						dispatch(setAppErrorAC('Some error was occurred'))
-					}
-					dispatch(setLoadingStatusAC('failed'))
+					handleServerAppError<{ item: itemTaskType }>(res.data, dispatch)
 				}
 			})
 			.catch(error => {
@@ -308,12 +301,7 @@ export const removeTaskTC =
 				if (res.data.resultCode === 0) {
 					dispatch(removeTaskAC(taskId, toDoListId))
 				} else {
-					if (res.data.messages.length) {
-						dispatch(setAppErrorAC(res.data.messages[0]))
-					} else {
-						dispatch(setAppErrorAC('Some error was occurred'))
-					}
-					dispatch(setLoadingStatusAC('failed'))
+					handleServerAppError(res.data, dispatch)
 				}
 			})
 			.catch(error => {

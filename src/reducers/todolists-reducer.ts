@@ -7,7 +7,10 @@ import {
 } from '../components/api/todolist-api'
 import { Dispatch } from 'redux'
 import { setAppErrorAC, setLoadingStatusAC } from './app-reducer'
-import { handleServerNetworkError } from '../utils/error-utils'
+import {
+	handleServerAppError,
+	handleServerNetworkError,
+} from '../utils/error-utils'
 
 export type filterValuesType = 'all' | 'completed' | 'active'
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -178,12 +181,10 @@ export const removeToDoListTC =
 				if (res.data.resultCode === 0) {
 					dispatch(removeToDoListAC(toDoListId))
 				} else {
-					if (res.data.messages.length) {
-						dispatch(setAppErrorAC(res.data.messages[0]))
-					} else {
-						dispatch(setAppErrorAC('Some error was occurred'))
-					}
-					dispatch(setLoadingStatusAC('failed'))
+					handleServerAppError<{ item: toDoListResponseType }>(
+						res.data,
+						dispatch
+					)
 				}
 			})
 			.catch(error => {
@@ -197,12 +198,7 @@ export const addToDoListTC = (title: string) => (dispatch: Dispatch) => {
 			if (res.data.resultCode === 0) {
 				dispatch(addToDoListAC(title, res.data.data.item.id))
 			} else {
-				if (res.data.messages.length) {
-					dispatch(setAppErrorAC(res.data.messages[0]))
-				} else {
-					dispatch(setAppErrorAC('Some error was occurred'))
-				}
-				dispatch(setLoadingStatusAC('failed'))
+				handleServerAppError<{ item: toDoListResponseType }>(res.data, dispatch)
 			}
 		})
 		.catch(error => {
@@ -217,12 +213,7 @@ export const changeToDoListTitleTC =
 				if (res.data.resultCode === 0) {
 					dispatch(changeToDoListTitleAC(title, toDoListId))
 				} else {
-					if (res.data.messages.length) {
-						dispatch(setAppErrorAC(res.data.messages[0]))
-					} else {
-						dispatch(setAppErrorAC('Some error was occurred'))
-					}
-					dispatch(setLoadingStatusAC('failed'))
+					handleServerAppError(res.data, dispatch)
 				}
 			})
 			.catch(error => {
