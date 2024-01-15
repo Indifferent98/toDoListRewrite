@@ -21,6 +21,9 @@ import { ErrorSnackBar } from './components/errorSnackBar/errorSnackBar'
 import { errorType } from './reducers/app-reducer'
 import { ToDoLists } from './components/ToDoLists/todolists'
 import { Login } from './Features/Login/Login'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { Page404 } from './Features/Login/Page404'
+import { Page } from './stories/Page'
 
 export const App = () => {
 	const dispatch = useAppDispatch()
@@ -73,9 +76,14 @@ export const App = () => {
 						</Button>
 					</Toolbar>
 				</AppBar>
+
 				<Container fixed>
-					{/* <Login /> */}
-					<ToDoLists />
+					<Routes>
+						<Route path='/login' element={<Login />} />
+						<Route path='/' element={<ToDoLists />} />
+						<Route path='/404' element={<Page404 />} />
+						<Route path='*' element={<Navigate to={'/404'} />} />
+					</Routes>
 				</Container>
 			</Box>
 			<div className={s.footer}>
