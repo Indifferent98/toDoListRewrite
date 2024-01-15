@@ -1,21 +1,19 @@
-import { ChangeEvent, useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import s from './/todolist.module.css'
-import { AddItemForm } from './addItemForm/addItemForm'
-import { EditableSpan } from './editableSpan/editableSpan'
+import { AddItemForm } from '../../addItemForm/addItemForm'
+import { EditableSpan } from '../../editableSpan/editableSpan'
 import Button from '@mui/material/Button'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton'
-import { Delete } from '@mui/icons-material'
 
-import Checkbox from '@mui/material/Checkbox'
-import { filterValuesType } from '../reducers/todolists-reducer'
+import { filterValuesType } from '../../../reducers/todolists-reducer'
 
 import React from 'react'
-import { Task } from './task/task'
-import { TaskStatuses, itemTaskType } from './api/todolist-api'
-import { AppRootStateType, useAppDispatch } from '../state/store'
-import { fetchTasksTC } from '../reducers/tasks-reducer'
+import { Task } from '../../task/task'
+import { TaskStatuses, itemTaskType } from '../../api/todolist-api'
+import { AppRootStateType, useAppDispatch } from '../../../state/store'
+import { fetchTasksTC } from '../../../reducers/tasks-reducer'
 import { useSelector } from 'react-redux'
 
 type TodolistPropsType = {
