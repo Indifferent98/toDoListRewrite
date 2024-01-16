@@ -7,6 +7,9 @@ const initialState: initialStateType = {
 	isLoggedIn: false,
 }
 
+
+type changeLoginStatus=()=>({})
+
 type actionsType = {}
 
 export const authReducer = (

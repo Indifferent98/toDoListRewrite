@@ -57,6 +57,19 @@ export type modelTaskType = {
 	deadline?: string | null
 }
 
+export type loginType = {
+	email: string
+	password: string
+	rememberMe?: boolean
+	captcha?: boolean
+}
+
+type authMeResponseType = {
+	id: number
+	email: string
+	login: string
+}
+
 export const TodolistApi = {
 	getToDoLists() {
 		return instance.get<toDoListResponseType[]>('/todo-lists')
@@ -98,5 +111,20 @@ export const TodolistApi = {
 			`/todo-lists/${toDoListId}/tasks/${taskId}`,
 			{ ...model }
 		)
+	},
+}
+
+export const AuthApi = {
+	login(loginData: loginType) {
+		return instance.post<ResponseType<{ userId: number }>>(
+			'/auth/login',
+			loginData
+		)
+	},
+	logOut() {
+		return instance.delete<ResponseType>('/auth/login')
+	},
+	me() {
+		return instance.get<ResponseType<authMeResponseType>>('/auth/me')
 	},
 }
