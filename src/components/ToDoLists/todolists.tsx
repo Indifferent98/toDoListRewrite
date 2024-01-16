@@ -1,5 +1,5 @@
 import { Grid, Paper } from '@mui/material'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import {
 	addTaskTC,

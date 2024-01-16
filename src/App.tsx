@@ -71,7 +71,13 @@ export const App = () => {
 						>
 							Todolists
 						</Typography>
-						<Button color='inherit' style={{ marginBottom: '15px' }}>
+						<Button
+							onClick={() => {
+								return <Navigate to={'/login'} />
+							}}
+							color='inherit'
+							style={{ marginBottom: '15px' }}
+						>
 							Login
 						</Button>
 					</Toolbar>
