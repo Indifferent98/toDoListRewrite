@@ -50,6 +50,7 @@ export const Login = () => {
 	const isLoggedIn = useSelector<AppRootStateType, boolean>(state => {
 		return state.auth.isLoggedIn
 	})
+
 	if (isLoggedIn) {
 		return <Navigate to={'/'} />
 	}

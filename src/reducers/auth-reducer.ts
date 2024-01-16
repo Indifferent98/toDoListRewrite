@@ -5,6 +5,7 @@ import {
 	handleServerAppError,
 	handleServerNetworkError,
 } from '../utils/error-utils'
+import { changeInitializeStatus } from './app-reducer'
 
 type initialStateType = {
 	isLoggedIn: boolean
@@ -28,8 +29,7 @@ type actionsType = changeLoginStatus
 export const authReducer = (
 	state: initialStateType = initialState,
 	action: actionsType
-) => {
-	debugger
+): initialStateType => {
 	switch (action.type) {
 		case 'CHANGE-LOGIN-STATUS':
 			return { ...state, isLoggedIn: action.isLoggedIn }
@@ -63,5 +63,22 @@ export const LogOutTC = () => (dispatch: Dispatch) => {
 		})
 		.catch(error => {
 			handleServerNetworkError(dispatch, error.messages)
+		})
+}
+
+export const MeTC = () => (dispatch: Dispatch) => {
+	AuthApi.me()
+		.then(res => {
+			if (res.data.resultCode === 0) {
+				dispatch(changeLoginStatus(true))
+			} else {
+				handleServerAppError(res.data, dispatch)
+			}
+		})
+		.catch(error => {
+			handleServerNetworkError(dispatch, error.messages)
+		})
+		.finally(() => {
+			dispatch(changeInitializeStatus(true))
 		})
 }

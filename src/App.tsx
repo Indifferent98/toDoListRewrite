@@ -24,12 +24,15 @@ import { Login } from './Features/Login/Login'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Page404 } from './Features/Login/Page404'
 import { Page } from './stories/Page'
+import { LogOutTC, MeTC } from './reducers/auth-reducer'
 
 export const App = () => {
 	const dispatch = useAppDispatch()
-
+	const isInitialize = useSelector<AppRootStateType, boolean>(
+		state => state.appState.isInitialize
+	)
 	useEffect(() => {
-		dispatch(fetchToDoListsTC())
+		dispatch(MeTC())
 	}, [])
 	const appError = useSelector<AppRootStateType, errorType>(
 		state => state.appState.error
@@ -37,7 +40,10 @@ export const App = () => {
 	const loadingStatus = useSelector<AppRootStateType, RequestStatusType>(
 		state => state.appState.status
 	)
-	return loadingStatus === 'loading' ? (
+	const isLoggedIn = useSelector<AppRootStateType, boolean>(
+		state => state.auth.isLoggedIn
+	)
+	return !isInitialize ? (
 		<div
 			style={{
 				position: 'fixed',
@@ -71,14 +77,18 @@ export const App = () => {
 						>
 							Todolists
 						</Typography>
-						<Button
-							onClick={() => {
-								return <Navigate to={'/login'} />
-							}}
-							color='inherit'
-							style={{ marginBottom: '15px' }}
-						>
-							Login
+						<Button color='inherit' style={{ marginBottom: '15px' }}>
+							{isLoggedIn ? (
+								<span
+									onClick={() => {
+										dispatch(LogOutTC())
+									}}
+								>
+									logOut
+								</span>
+							) : (
+								<span>LogIn</span>
+							)}
 						</Button>
 					</Toolbar>
 				</AppBar>

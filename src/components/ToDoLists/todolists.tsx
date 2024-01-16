@@ -1,5 +1,5 @@
 import { Grid, Paper } from '@mui/material'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
 	addTaskTC,
@@ -19,8 +19,18 @@ import { useAppDispatch, AppRootStateType } from '../../state/store'
 import { AddItemForm } from '../addItemForm/addItemForm'
 import { TaskStatuses } from '../api/todolist-api'
 import { Todolist } from './ToDoList/todolist'
+import { Navigate } from 'react-router-dom'
 
 export const ToDoLists = () => {
+	const isLoggedIn = useSelector<AppRootStateType, boolean>(
+		state => state.auth.isLoggedIn
+	)
+	useEffect(() => {
+		if (!isLoggedIn) {
+			return
+		}
+		dispatch(fetchToDoListsTC())
+	}, [])
 	const dispatch = useAppDispatch()
 
 	const todolists = useSelector<AppRootStateType, todoListDomainType[]>(
@@ -87,6 +97,9 @@ export const ToDoLists = () => {
 		[dispatch]
 	)
 
+	if (!isLoggedIn) {
+		return <Navigate to={'/login'} />
+	}
 	return (
 		<>
 			<Grid container>
