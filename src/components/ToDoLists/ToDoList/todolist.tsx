@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux'
 type TodolistPropsType = {
 	title: string
 	toDoListId: string
-	// tasks: itemTaskType[]
 	removeTask: (id: string, toDoListId: string) => void
 	filter: filterValuesType
 	changeFilter: (newFilter: filterValuesType, toDoListId: string) => void

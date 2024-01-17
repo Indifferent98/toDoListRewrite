@@ -11,10 +11,6 @@ import {
 	Container,
 	CircularProgress,
 } from '@mui/material'
-import {
-	RequestStatusType,
-	fetchToDoListsTC,
-} from './reducers/todolists-reducer'
 import { useSelector } from 'react-redux'
 import { AppRootStateType, useAppDispatch } from './state/store'
 import { ErrorSnackBar } from './components/errorSnackBar/errorSnackBar'
@@ -23,7 +19,7 @@ import { ToDoLists } from './components/ToDoLists/todolists'
 import { Login } from './Features/Login/Login'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { Page404 } from './Features/Login/Page404'
-import { Page } from './stories/Page'
+
 import { LogOutTC, MeTC } from './reducers/auth-reducer'
 
 export const App = () => {
@@ -37,24 +33,25 @@ export const App = () => {
 	const appError = useSelector<AppRootStateType, errorType>(
 		state => state.appState.error
 	)
-	const loadingStatus = useSelector<AppRootStateType, RequestStatusType>(
-		state => state.appState.status
-	)
+
 	const isLoggedIn = useSelector<AppRootStateType, boolean>(
 		state => state.auth.isLoggedIn
 	)
-	return !isInitialize ? (
-		<div
-			style={{
-				position: 'fixed',
-				top: '40%',
-				textAlign: 'center',
-				width: '100%',
-			}}
-		>
-			<CircularProgress />
-		</div>
-	) : (
+	if (!isInitialize) {
+		return (
+			<div
+				style={{
+					position: 'fixed',
+					top: '40%',
+					textAlign: 'center',
+					width: '100%',
+				}}
+			>
+				<CircularProgress />
+			</div>
+		)
+	}
+	return (
 		<>
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position='static' style={{ height: '50px' }}>
